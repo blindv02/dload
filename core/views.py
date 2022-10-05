@@ -54,7 +54,7 @@ def done(request):
             # handle file not exist case here
             response = HttpResponseNotFound(request, 'error.html')
             
-        remove(new_file)
+        os.remove(new_file)
         return response
     
     elif button_type1 == 'mp4':
