@@ -8,4 +8,6 @@ urlpatterns = [
     path('downloaded/', views.downloaded, name='downloaded'),
     path('done/', views.done, name='done'),
     path('error/', views.error, name='error'),
+    path('login/', views.login, name='login'),
+    path('registrar/', views.registrar, name='registrar'),
 ]
