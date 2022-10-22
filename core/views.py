@@ -7,7 +7,11 @@ from pytube import YouTube
 import os
 from os import path, rename, remove
 from django.http import HttpResponse, HttpResponseNotFound
+
+# Importamos la clase Usuarios
 from .models import Usuarios
+# Importamos el Form UsuariosForm
+from .forms import UsuariosForm
 
 # importamos estas librerias para control de usuarios y mensajes
 from django.contrib import messages, auth
@@ -88,11 +92,6 @@ def done(request):
 def error(request):
     return render(request, 'error.html')
 
-
-def registrar(request):
-    pass
-
-
 def login(request):
     if request.method == 'POST':
         #recuperamos el valor de los campos
@@ -122,3 +121,24 @@ def login(request):
             return redirect('login')
         
     return render(request, 'login.html')
+
+def registrar(request):
+    form = UsuariosForm()
+    
+    if request.method == 'POST':
+        nombre = request.POST.get('nombre',"")
+        apellido = request.POST.get('apellido',"")
+        if nombre == "" or apellido == "":
+            messages.warning(request, 'No ingreso Nombre y/o apellido')
+            return redirect('registrar')
+                     
+        form = UsuariosForm(request.POST)
+        if form.is_valid():
+            form.save()
+        return redirect('login')
+    #Le pasamos el form vacio para que se renderice en el register.html
+    context = {
+        'form': form
+    }
+
+    return render(request, 'registrar.html', context)
