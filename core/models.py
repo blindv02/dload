@@ -9,6 +9,9 @@ class Usuarios(models.Model):
     fecha_alta = models.DateTimeField(auto_now_add=True,verbose_name='Fecha de Alta')
         
     REQUIRED_FIELDS = ['email', 'password', 'nombre','apellido']
+    
+    def nombre_completo(self):
+        return f'{self.nombre}, {self.apellido}'
     class Meta:
         verbose_name = "Usuario"
         verbose_name_plural = "Usuarios"

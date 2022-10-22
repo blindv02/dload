@@ -7,12 +7,17 @@ from pytube import YouTube
 import os
 from os import path, rename, remove
 from django.http import HttpResponse, HttpResponseNotFound
+from .models import Usuarios
 
+# importamos estas librerias para control de usuarios y mensajes
+from django.contrib import messages, auth
 
 # Create your views here.
 
 def index(request):
-    return render(request, 'index.html')
+    user = request.user
+    context={'user':user}
+    return render(request, 'index.html',context)
 
 def downloaded(request):
     global url, yt
@@ -83,8 +88,37 @@ def done(request):
 def error(request):
     return render(request, 'error.html')
 
-def login(request):
-    pass
 
 def registrar(request):
     pass
+
+
+def login(request):
+    if request.method == 'POST':
+        #recuperamos el valor de los campos
+        email = request.POST['email']
+        password = request.POST['password']
+
+        user = Usuarios.objects.get(email=email,password=password)
+        print("El user es =", user)
+        if user is not None:
+            print("Hizo Login!!!")
+            messages.success(request, 'Has iniciado sesion exitosamente')
+            context={
+                'usuario':user,
+            }
+            return render(request,'index.html',context)
+        else: #No encontro usuario usuario y contraseña
+            
+            if Usuarios.objects.filter(email=email).exists():
+                
+                user=Usuarios.objects.filter(email=email).first()
+                print("email=" +email)
+                messages.error(request, 'La contraseña es incorrecta')
+                
+            else:    
+                print("no hay usu")
+                messages.error(request, 'El Usuario no existe')
+            return redirect('login')
+        
+    return render(request, 'login.html')
