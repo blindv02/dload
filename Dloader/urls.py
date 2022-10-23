@@ -29,4 +29,6 @@ urlpatterns = [
     path('downloaded/', core.views.downloaded, name='downloaded'),
     path('done/', core.views.done, name='done'),
     path('error/', core.views.error, name='error'),
+    path('search/', core.views.search, name='search'),
+    path('search_list/', core.views.search_list, name='search_list'),
 ]

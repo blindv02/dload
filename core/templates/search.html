@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href='{% static 'style.css' %}'>
+	<title>Dload Youtube</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap" rel="stylesheet"> 
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+	<div class="banner">
+		<div class="container">
+		<span style="--l: 'Dload';">Search On</span>
+		<span style="--l: 'Tube';">Dload</span>
+		</div>
+		<div class="formulario">
+			<form action="/search_list/" method="get" id="enterlink">
+				<label>Search a Video
+					<input class="form-control" type="text" name="url">
+				</label>
+				<div class="buttons">
+					<button class="btn" id="btnsearch" type="submit">Let's search</button>
+				</div>
+			</form>
+			<div class="">
+				<form>
+					{% csrf_token %}
+					<h1>Resultado de la búsqueda</h1>
+					{% if resultado %}
+						<p>Hay {{resultado|length}} coincidencias</p>
+						<ul>
+							{% for v in resultado %}
+								<iframe class= "preview" src= "{{v.embed_url}}"  title= "{{v.title}}"  width="100%" height="300" style="border:1px solid black;"> </iframe>
+								<li>{{v.title}}  {{v.embed_url}}</li>
+							{% endfor %}
+						</ul>
+					{% else %}
+						<p>No hay resultados</p>
+					{% endif %}
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+
+

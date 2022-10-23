@@ -4,6 +4,7 @@ from turtle import title
 from unicodedata import name
 from django.shortcuts import render, HttpResponse, redirect
 from pytube import YouTube
+from pytube import Search
 import os
 from os import path, rename, remove
 from django.http import HttpResponse, HttpResponseNotFound
@@ -82,3 +83,12 @@ def done(request):
 
 def error(request):
     return render(request, 'error.html')
+
+
+def search(request):
+    return render(request, 'search.html')
+
+def search_list(request):
+    str = request.GET.get('url')
+    s = Search(str)    
+    return render(request, 'search.html',{'resultado': s.results})
