@@ -11,4 +11,3 @@ class Multimedia(models.Model):
     nombre = models.ForeignKey(Usuarios, null=True, blank=True, on_delete=models.CASCADE)
     titulo = models.CharField(null=False)
     embed_link = models.URLField()
-    
