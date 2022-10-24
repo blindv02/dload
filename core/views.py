@@ -98,7 +98,7 @@ def login(request):
         email = request.POST['email']
         password = request.POST['password']
 
-        user = Usuarios.objects.get(email=email,password=password)
+        user = Usuarios.objects.filter(email=email,password=password).first()
         print("El user es =", user)
         if user is not None:
             print("Hizo Login!!!")

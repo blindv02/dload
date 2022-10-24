@@ -1,19 +1,18 @@
 {% load static %}
 
-<header class="section-header">
-<nav class="navbar p-md-0 navbar-expand-sm navbar-light border-bottom">
+<nav id="nav" class="navbar p-md-0 navbar-expand-sm navbar-light border-bottom">
  
 <section class="header-main border-bottom">
   <div class="container">
-    
-  <div class="col-lg-2 col-md-3 col-6">
+  <div class="row"> 
+  <div id="logo" class="col-lg-4 col-md-3">
     <a href="#" class="brand-wrap">
       <img style="width:65px; height:65px; margin-left:3em; margin-top:-15vh;" class="logo" src="{% static 'images/logo.ico' %}">
     </a> 
     <p style="color:White; font-size:2em;padding-left:1em;"> Dload!</p>
   </div>
    
-  <div class="col-lg-3 col-sm-6 col-8 order-2 order-lg-3">
+  <div id="derecha" class="col-lg-3 col-sm-6 col-8 order-2 order-lg-3">
         <div class="d-flex justify-content-end mb-3 mb-lg-0">
 
           {% if usuario.id is None %}
@@ -38,7 +37,22 @@
 </div>
 
 </div>
-
+</div>
 </section> 
 </nav>
-</header>
+
+<style>
+#nav{
+  position:relative!important;
+  top: -16em!important;
+}
+#logo{
+  position:relative!important;
+  left:-30em!important;
+}
+#derecha{
+  position:relative!important;
+  left:40em!important;
+  top:-4em!important;
+}
+</style>
