@@ -26,18 +26,20 @@
 					<button class="btn" id="btnsearch" type="submit">Let's search</button>
 				</div>
 			</form>
-			<div class="">
+			<div class="container">
 				<form>
 					{% csrf_token %}
 					<h1>Resultado de la búsqueda</h1>
 					{% if resultado %}
 						<p>Hay {{resultado|length}} coincidencias</p>
-						<ul>
 							{% for v in resultado %}
-								<iframe class= "preview" src= "{{v.embed_url}}"  title= "{{v.title}}"  width="100%" height="300" style="border:1px solid black;"> </iframe>
-								<li>{{v.title}}  {{v.embed_url}}</li>
+								<!--iframe class= "preview" src= "{{v.embed_url}}"  title= "{{v.title}}" style="border:1px solid black;" width=50%; height=20%> </iframe-->
+								<!--p>{{v.title}}</p-->
+								<a href="http://127.0.0.1:8000/downloaded/?url" target="_blank" >{{v.title}}</a>
+								<p></p>
+								<iframe width="178" height="100" src="{{v.embed_url}}" title="{{v.title}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+								<p></p>
 							{% endfor %}
-						</ul>
 					{% else %}
 						<p>No hay resultados</p>
 					{% endif %}
