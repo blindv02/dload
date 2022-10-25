@@ -18,7 +18,8 @@
 		<span style="--l: 'Tube';">Dload</span>
 		</div>
 		<div class="formulario">
-			<form action="/search_list/" method="get" id="enterlink">
+			<form action="/search_list/" method="get" id="getsearch">
+				{% csrf_token %}
 				<label>Search a Video
 					<input class="form-control" type="text" name="url">
 				</label>
@@ -27,23 +28,34 @@
 				</div>
 			</form>
 			<div class="container">
-				<form>
-					{% csrf_token %}
+					
 					<h1>Resultado de la búsqueda</h1>
 					{% if resultado %}
 						<p>Hay {{resultado|length}} coincidencias</p>
 							{% for v in resultado %}
-								<!--iframe class= "preview" src= "{{v.embed_url}}"  title= "{{v.title}}" style="border:1px solid black;" width=50%; height=20%> </iframe-->
-								<!--p>{{v.title}}</p-->
-								<a href="http://127.0.0.1:8000/downloaded/?url" target="_blank" >{{v.title}}</a>
+								<a href="{{v.watch_url}}" target="_blank" >{{v.title}}</a>
+								{% csrf_token %}
 								<p></p>
 								<iframe width="178" height="100" src="{{v.embed_url}}" title="{{v.title}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 								<p></p>
+								<div>
+									<form action = "/dwnmp3/" method = 'get'>
+										{% csrf_token %}
+										<button class = 'btn' type="submit" value="MP3" id= "dwmp3">Download MP3</button>
+										<input class="form-control" type="hidden" name="vurl3" value = {{v.watch_url}}>
+									</form>
+								</div>
+								<div>
+									<form action = '/dwnmp4/' method = 'get'>
+										{% csrf_token %}
+										<button class = 'btn' type="submit" value="MP4" id="dwmp4">Download MP4</button>
+										<input class="form-control" type="hidden" name="vurl4" value = {{v.watch_url}}>
+									</form>
+								</div>
 							{% endfor %}
 					{% else %}
 						<p>No hay resultados</p>
 					{% endif %}
-				</form>
 			</div>
 		</div>
 	</div>

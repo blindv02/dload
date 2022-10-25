@@ -31,4 +31,7 @@ urlpatterns = [
     path('error/', core.views.error, name='error'),
     path('search/', core.views.search, name='search'),
     path('search_list/', core.views.search_list, name='search_list'),
+    path('dwnmp3/', core.views.downmp3, name='downmp3'),
+    path('dwnmp4/', core.views.downmp4, name='downmp4'),
+    
 ]

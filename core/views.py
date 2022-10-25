@@ -92,3 +92,55 @@ def search_list(request):
     str = request.GET.get('url')
     s = Search(str)    
     return render(request, 'search.html',{'resultado': s.results})
+
+def downmp3(request):
+        global vurl3
+        vurl3 = request.GET.get('vurl3')
+        print(vurl3)
+        homedir = os.path.expanduser("~\Downloads")
+        ytb = YouTube(vurl3)
+        video = YouTube(vurl3).streams.get_audio_only().download(homedir)
+        base, ext = path.splitext(video)
+        new_file = base + '.mp3'
+        rename(video, new_file)
+        
+        try:    
+            with open(new_file, 'rb') as f:
+                file_data = f.read()
+
+            # sending response 
+            response = HttpResponse(file_data, content_type='audio/mpeg')
+            response['Content-Disposition'] = 'attachment; filename="'+ ytb.title +'.mp3"'
+            
+        except IOError:
+            # handle file not exist case here
+            response = HttpResponseNotFound(request, 'error.html')
+            
+        os.remove(new_file)
+        return response
+
+
+def downmp4(request):
+        global vurl4
+        vurl4 = request.GET.get('vurl4')
+        ytb = YouTube(vurl4)
+        homedir = os.path.expanduser("~\Downloads")
+        video = YouTube(vurl4).streams.filter(file_extension='mp4').get_highest_resolution().download(homedir)
+        base, ext = path.splitext(video)
+        new_file = base + '.mp4'
+        rename(video, new_file)
+        
+        try:    
+            with open(new_file, 'rb') as f:
+                file_data = f.read()
+
+            # sending response 
+            response = HttpResponse(file_data, content_type='video/mp4')
+            response['Content-Disposition'] = 'attachment; filename="'+ ytb.title +'.mp4"'
+        
+        except IOError:
+            # handle file not exist case here
+            response = HttpResponseNotFound(request, 'error.html')
+            
+        os.remove(new_file)
+        return response
