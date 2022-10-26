@@ -96,7 +96,6 @@ def search_list(request):
 def downmp3(request):
         global vurl3
         vurl3 = request.GET.get('vurl3')
-        print(vurl3)
         homedir = os.path.expanduser("~\Downloads")
         ytb = YouTube(vurl3)
         video = YouTube(vurl3).streams.get_audio_only().download(homedir)
