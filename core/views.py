@@ -9,7 +9,6 @@ import os
 from os import path, rename, remove
 from django.http import HttpResponse, HttpResponseNotFound
 
-
 # Create your views here.
 
 def index(request):
@@ -118,7 +117,6 @@ def downmp3(request):
         os.remove(new_file)
         return response
 
-
 def downmp4(request):
         global vurl4
         vurl4 = request.GET.get('vurl4')
@@ -143,3 +141,9 @@ def downmp4(request):
             
         os.remove(new_file)
         return response
+       
+def login(request):
+    pass
+
+def registrar(request):
+    pass

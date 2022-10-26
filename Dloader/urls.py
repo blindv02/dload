@@ -19,7 +19,6 @@ from unicodedata import name
 from xml.etree.ElementInclude import include
 from django.contrib import admin
 from django.urls import path, include
-import core.views
 
 
 urlpatterns = [
@@ -33,5 +32,4 @@ urlpatterns = [
     path('search_list/', core.views.search_list, name='search_list'),
     path('dwnmp3/', core.views.downmp3, name='downmp3'),
     path('dwnmp4/', core.views.downmp4, name='downmp4'),
-    
 ]
