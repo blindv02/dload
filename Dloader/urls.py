@@ -19,14 +19,9 @@ from unicodedata import name
 from xml.etree.ElementInclude import include
 from django.contrib import admin
 from django.urls import path, include
-import core.views
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', core.views.index, name='home1'),
-    path('home/', core.views.index, name='home2'),
-    path('downloaded/', core.views.downloaded, name='downloaded'),
-    path('done/', core.views.done, name='done'),
-    path('error/', core.views.error, name='error'),
+    path('', include('core.urls'))
 ]

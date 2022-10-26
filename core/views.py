@@ -82,3 +82,9 @@ def done(request):
 
 def error(request):
     return render(request, 'error.html')
+
+def login(request):
+    pass
+
+def registrar(request):
+    pass
