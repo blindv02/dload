@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -70,6 +71,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Dloader.wsgi.application'
 
+
+AUTH_USER_MODEL = 'accounts.Usuario'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
