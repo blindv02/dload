@@ -20,4 +20,4 @@ class UsuarioAdmin(UserAdmin):
 
 
 # Register your models here.
-admin.site.register(Usuario, UsuarioAdmin)
+admin.site.register(Usuario)

@@ -30,9 +30,9 @@ def registrar(request):
     
     if request.method == 'POST':
         form = RegistroForm(request.POST)
-        print("registro")
+        #print("registro")
         if form.is_valid():
-            print("registro valido")
+            #print("registro valido")
             nombre = form.cleaned_data['nombre']
             apellido = form.cleaned_data['apellido']
             email = form.cleaned_data['email']
@@ -63,13 +63,10 @@ def login(request):
             context={
                 'usuario':user,
             }
-            
             return render(request,'index.html',context)
-    
         else:
-            
+            print("mal contraseña")
             if Usuario.objects.filter(email=email).exists():
-                
                 user=Usuario.objects.filter(email=email).first()
                 messages.error(request, 'La contraseña es incorrecta!')
                 return redirect('login')
@@ -79,9 +76,9 @@ def login(request):
                 return redirect('login')
     user=auth.authenticate(email=None, password=None)
     context={
-           'usuario':user,
+           'usuario':user
             }
-    
+    print(context)
     return render(request, 'login.html',context)
 
 
