@@ -8,7 +8,8 @@
 		<span style="--l: 'Tube';">Tube </span>
 		</div>
 		<div class="formulario">
-			<form action="downloaded/" method="get" id="enterlink">
+			{% csrf_token %}
+			<form action= {%url 'downloaded'%} method="get" id="enterlink">
 				<label>Enter your link
 					<input class="form-control" type="text" name="url">
 				</label>

@@ -34,9 +34,6 @@ class UsuariosManager(BaseUserManager):
         return user
 
 
-
-
-
 class Usuario(AbstractBaseUser):
     nombre = models.CharField(max_length=50,verbose_name='Nombre')
     apellido = models.CharField(max_length=50,verbose_name='Apellido')
@@ -71,4 +68,3 @@ class Usuario(AbstractBaseUser):
 
     def has_module_perms(self, add_label):
         return True
-
