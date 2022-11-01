@@ -23,6 +23,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+<<<<<<< HEAD
     path('', include('accounts.urls')),
     path('core/',include('core.urls')),
     path('', include('core.urls')),
@@ -31,3 +32,15 @@ urlpatterns = [
     # path('dwnmp3/', core.views.downmp3, name='downmp3'),
     # path('dwnmp4/', core.views.downmp4, name='downmp4'),
 ]
+=======
+    path('', core.views.index, name='home1'),
+    path('home/', core.views.index, name='home2'),
+    path('downloaded/', core.views.downloaded, name='downloaded'),
+    path('done/', core.views.done, name='done'),
+    path('error/', core.views.error, name='error'),
+    path('search/', core.views.search, name='search'),
+    path('search_list/', core.views.search_list, name='search_list'),
+    path('dwnmp3/', core.views.downmp3, name='downmp3'),
+    path('dwnmp4/', core.views.downmp4, name='downmp4'),
+]
+>>>>>>> main
