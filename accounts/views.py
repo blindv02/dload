@@ -55,9 +55,9 @@ def login(request):
         password = request.POST['password']
 
         user = auth.authenticate(email=email, password=password)
-        print("El user es =", user)
+        #print("El user es =", user)
         if user is not None:
-            print("hay usu")   
+           #print("hay usu")   
             auth.login(request, user)
             messages.success(request, 'Has iniciado sesion exitosamente')
             context={

@@ -24,5 +24,10 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('accounts.urls')),
-    path('core/',include('core.urls'))
+    path('core/',include('core.urls')),
+    path('', include('core.urls')),
+    #path('search/', core.views.search, name='search'),
+    # path('search_list/', core.views.search_list, name='search_list'),
+    # path('dwnmp3/', core.views.downmp3, name='downmp3'),
+    # path('dwnmp4/', core.views.downmp4, name='downmp4'),
 ]
