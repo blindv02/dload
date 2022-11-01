@@ -71,6 +71,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Dloader.wsgi.application'
 
+#Agregado por Leo J
+LOGIN_URL = 'login'
 
 AUTH_USER_MODEL = 'accounts.Usuario'
 
