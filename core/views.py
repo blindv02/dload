@@ -11,11 +11,11 @@ from django.http import HttpResponse, HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
-@login_required(login_url='login')
+@login_required(login_url='')
 def index(request):
     return render(request, 'index.html')
 
-@login_required(login_url='login')
+@login_required(login_url='')
 def downloaded(request):
     global url, yt
     url = request.GET.get('url')
@@ -32,7 +32,7 @@ def downloaded(request):
 
     return render(request, 'downloaded.html', context)
 
-@login_required(login_url='login')
+@login_required(login_url='')
 def done(request):
     global url
     homedir = os.path.expanduser("~\Downloads")
@@ -83,22 +83,22 @@ def done(request):
     else:
         return render(request, 'error.html')
 
-@login_required(login_url='login')
+@login_required(login_url='')
 def error(request):
     return render(request, 'error.html')
 
-@login_required(login_url='login')
+@login_required(login_url='')
 def search(request):
     return render(request, 'search.html')
 
-@login_required(login_url='login')
+@login_required(login_url='')
 def search_list(request):
     ustr = request.GET.get('url')
     s = Search(ustr)    
     return render(request, 'search.html',{'resultado': s.results})
 
 
-@login_required(login_url='login')
+@login_required(login_url='')
 def downmp3(request):
         global vurl3
         vurl3 = request.GET.get('vurl3')
@@ -125,7 +125,7 @@ def downmp3(request):
         return response
 
 
-@login_required(login_url='login')
+@login_required(login_url='')
 def downmp4(request):
         global vurl4
         vurl4 = request.GET.get('vurl4')
