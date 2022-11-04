@@ -1,66 +1,52 @@
-{% extends 'index.html' %}
-
+{% extends 'core.html' %}
 
 {% block content %}
 
-
-
 <section class="section-content padding-y">
 
-        <div class="card mx-auto" style="max-width:520px; margin-top:40px; border-radius: 25px;">
+    
+        <div class="card mx-auto" id="regbox">
           <article class="card-body">
             {% include 'alerts.html' %}
 
-            <header class="mb-4"><h4 class="card-title">Registro de Usuario</h4></header>
+            <header class="mb-4"><h4 class="card-title" id="textreg">Registro de Usuario</h4></header>
             <form action="{% url 'registrar' %}" method="POST" >
                   {% csrf_token %}
-
-                    <div class="form-row">
-                        <div class="col form-group">
+                  
+                    <div class="form-row" id="regformbox">
+                        <div class="col form-group" id="regfirstname">
                             <label>Nombre</label>
                             {{ form.nombre }}
                         </div> 
-                        <div class="col form-group">
+                        <div class="col form-group" id="reglastname">
                             <label>Apellido</label>
                             {{ form.apellido }}
                         </div> 
-                    </div> 
-
-                    <div class="form-row">
-                        <div class="col form-group">
+                        <div class="col form-group" id="regemail">
                             <label>Email</label>
                             {{ form.email }}
                         </div> 
-                    </div> 
-
-
-
-
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label>Crear password</label>
-                             {{ form.password }}
+                        <div class="form-group col-md-6" id="regpass">
+                            <label>Password</label>
+                            {{ form.password }}
                         </div> 
-                        <!--
-                        <div class="form-group col-md-6">
-                            <label>Repetir password</label>
-                            {{ form.confirm_password }}
-                        </div>
-                        --> 
                     </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-block"> Registrarse  </button>
-                    </div> 
+
 
                     {{ form.email.errors }}
                     {{ form.non_field_errors }}
 
                 </form>
+            
+                <div class="form-group" id="regbtnbox">
+                    <button type="submit" class="btn btn-primary btn-block" id="btnreg"> Registrar  </button>
+                    <p class="text-center mt-4" id="asklog">Tienes una cuenta? <a href="{% url 'login' %}" style="color: white">Log In</a></p>
+                </div>
+                
             </article>
-        </div> 
-        <p class="text-center mt-4">Tienes una cuenta? <a href="{% url 'login' %}">Log In</a></p>
+        </div>
+
         <br><br>
-    
 
     </section>
 

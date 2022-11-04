@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href='{% static 'css/style.css' %}'>
+	<title>Dload Tube</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap" rel="stylesheet"> 
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+	<body>
+		<div class="col-lg-2 col-md-3 col-6" id="imgbox">
+			<a href="#" id="clickimg">
+			<img id="imguser" class="logo" src="{% static 'images/logo.ico' %}">
+			</a> 
+		</div>
+
+		<div id="userbox">
+			{% if usuario.id is None %}
+			
+			<div class="widget-header" id="bienvenidobox">
+				<small class="bienvenido">Bienvenido visitante!</small>
+			</div>
+			<div style="padding-top: 1.25em;">
+				<a href="{% url 'login' %}" class="loginbtns">Login</a> 
+				<a href="{% url 'registrar' %}" class="loginbtns"> Registrar</a>
+			</div>
+			{% else %}
+		
+			<div class="widget-header">
+			<small class="bienvenido">Bienvenido <strong>{{ usuario.nombre_completo }}</strong></small>
+			</div>
+			<div style="padding-top: 1.25em;">
+				<a href="{% url 'logout' %}" class="loginbtns">Logout</a> 
+			</div>
+			{% endif %}
+		</div>
+		
+		<div class="nav-bar">
+			<a href="{% url 'home1' %}" style="text-decoration: none">
+			<span style="--l: 'Dload';">Dload</span>
+			<span style="--l: 'Tube';">Tube </span>
+		</a>
+		</div>		
+
+	<div class="centralizador">
+		<div class="banner">
+			{% block content %}
+			
+			{% endblock content %}
+		</div>
+	</div>
+</body>
+</html>
+
+
