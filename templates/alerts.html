@@ -2,14 +2,14 @@
 
         <div id="message"  class="container">
 
-            {% for message in messages %}
+          {% for message in messages %}
 
           <div  {% if message.tags %}    class="alert alert-{{ message.tags }}"  {% endif %}  role="alert">
-              {{ message }}
+              <p class="bienvenido">{{ message }}</p>
           </div>
 
-            {% endfor %}
-            
+          {% endfor %}
+
         </div>
 
 {% endif %}

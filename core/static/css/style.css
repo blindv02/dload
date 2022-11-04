@@ -1,0 +1,460 @@
+/* fuentes de google */
+@import url("https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap");
+
+
+
+/* Cuerpo total */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  background: -webkit-radial-gradient(#560e86, #0a0011);
+}
+
+
+
+/* Recuadros para enmarcar */
+.centralizador{
+  padding: 1.25em;
+  justify-content: center;
+  align-items: center;
+}
+
+.banner{
+	position: static;
+	min-height: 80vh;
+  justify-content: center;
+  align-items: center;
+	display: flex;
+	border-radius: 0.5em;
+	box-shadow: inset 0.3125em 0.3125em 0.3125em rgba(0,0,0,0.2),
+	inset -0.3125em -0.3125em 0.9375em rgba(255,255,255,0.1),
+	-0.3125em -0.3125em 0.9375em rgba(255,255,255,0.1);
+  margin: 1.875em;
+}
+
+
+
+/* Barra de navegacion o propiedades en parte superior de pantalla */
+.nav-bar{
+  width: fit-content;
+  padding: 1.25em;
+  padding-left: 2.5em;
+  position: relative;
+}
+.nav-bar span {
+  font-size: 1.25em;
+  font-weight: bold;
+  position: static;
+  font-family: "Fredoka One";
+  cursor: pointer;
+  transition: all 300ms ease-in-out;
+}
+.nav-bar span::before {
+  content: var(--l);
+  position: absolute;
+  transform: scale(1.1);
+  filter: blur(0.9375em);
+}
+.nav-bar span::after {
+  position: absolute;
+  height: 200%;
+  width: 3.125em;
+  top: 80%;
+  left: 0;
+  filter: blur(10px);
+  transform: rotateX(50deg);
+}
+
+.nav-bar span:nth-child(1) {
+  color: #d4cbcb;
+}
+.nav-bar span:nth-child(2) {
+  color: #cc1a1a;
+}
+
+#imgbox{
+  width: 2.8125em;
+  height: 2.8125em;
+  float: right;
+  padding: 0.625em;
+}
+#imguser{
+  width: 2.8125em;
+  height: 2.8125em;
+  float: right;
+  margin-left: 3em;
+}
+#clickimg{
+  width: 2.8125em;
+  height: 2.8125em;
+  float: right;
+}
+
+#userbox{
+  text-align: center;
+  width: fit-content;
+  float: right;
+  margin-top: 0.9375em;
+  margin-right: 1.875em;
+}
+.bienvenido{
+  vertical-align:middle;
+  font-family: "Fredoka One";
+  font-size: 0.95em;
+  font-weight: bold;
+  text-shadow: 0.0625em 0.0625em #ff1f71;
+  color: white;
+  padding-bottom: 2.5em;
+}
+.loginbtns{
+  text-decoration: none;
+  padding: 0.625em;
+  vertical-align:middle;
+  font-family: "Fredoka One";
+  font-size: 0.85em;
+  font-weight: bold;
+  text-shadow: 0.0625em 0.0625em #ff1f71;
+  color: white;
+  background: #ff1f71;
+  box-shadow: 0 0 0.3125em #ff1f71, 0 0 1.875em #ff1f71, 0 0 3.75em #ff1f71;
+  transition: 0.5s;
+  border-radius: 0.75em 0.75em;
+}
+
+
+
+/* Formulario central de ingreso de url */
+.formulario{
+  text-align: center;
+  position: absolute;
+  padding: 0.3125em;
+}
+#btnselect{
+  margin-top: 25em;
+}
+label{
+  vertical-align:middle;
+  font-family: "Fredoka One";
+  font-size: 1.25em;
+  font-weight: bold;
+  text-shadow: 0.0625em 0.0625em #ff1f71;
+  color: white;
+}
+.form-control{
+  width: 20.625em;
+  padding: 0.625em;
+  background: none;
+  box-sizing: border-box ;
+  border: 0.125rem solid #ff1f71;
+  color: white;
+  font-family: "Fredoka One";
+  outline: none;
+  padding: 0.3125em;
+  border-radius: 1.25em 1.25em;
+}
+
+.preview{
+  border-radius: 1.25em 1.25em;
+  height: 27em;
+  border: 0.3125em solid #ff1f71;
+  margin-bottom: 250px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+
+
+/* Propiedades de Botones */
+.buttons{
+  margin-top: 2.25em;
+  width: 18.75em;
+  padding: 2.25em;
+  text-align: center;
+  color: white;
+  border-radius: 1.25em 1.25em;
+  background: #ff1f71;
+  box-shadow: 0 0 0.3125em #ff1f71, 0 0 1.875em #ff1f71, 0 0 3.75em #ff1f71;
+  transition: 0.5s;
+}
+
+.btn{
+  border-color: white;
+  margin-right: 0.9375em;
+  padding: 0.9375em;
+  color: white;
+  border-radius: 1.25em 1.25em;
+  font-family: "Fredoka One";
+  background: #ff1f71;
+  box-shadow: 0 0 0.3125em #ff1f71, 0 0 1.875em #ff1f71, 0 0 3.75em #ff1f71;
+  transition: 0.5s;
+}
+.btn2{
+  border-color: white;
+  margin-left: 0.9375em;
+  padding: 0.9375em;
+  color: white;
+  border-radius: 1.25em 1.25em;
+  font-family: "Fredoka One";
+  background: #ff1f71;
+  box-shadow: 0 0 0.3125em #ff1f71, 0 0 1.875em #ff1f71, 0 0 3.75em #ff1f71;
+  transition: 0.5s;
+}
+.btn:hover{
+  background: #560e86;
+  transition: 1s;
+}
+.btn2:hover{
+  background: #560e86;
+  transition: 1s;
+}
+#btndload{
+  border-color: white;
+  padding: 1.25em;
+  font-size: 1.25em;
+  margin-left: 0.9375em;
+}
+#btnlogin{
+  border-color: white;
+  width: 6.25em;
+}
+#btnreg{
+  border-color: white;
+  width: 6.25em;
+}
+
+#back{
+  margin-left: 0.9375em;
+  margin-top: 1.25em;
+}
+
+
+
+/* Propiedades del login */
+#logformbox{
+  text-align: center;
+  padding: 1.875em;
+}
+#textlogin{
+  vertical-align:middle;
+  font-family: "Fredoka One";
+  font-size: 3.95em;
+  font-weight: bold;
+  text-shadow: 0.0625em 0.0625em #ff1f71;
+  color: white;
+  padding-bottom: 0.75em;
+}
+#logpass{
+  padding: 1.25em;
+}
+#askreg{
+  padding-top: 1.25em;
+  vertical-align:middle;
+  font-family: "Fredoka One";
+  font-size: 0.95em;
+  font-weight: bold;
+  text-shadow: 0.0625em 0.0625em #ff1f71;
+  color: white;
+  padding-bottom: 2.5em;
+}
+
+
+/* Propiedades del register */
+#regformbox{
+  text-align: center;
+  padding: 1.875em;
+}
+#textreg{
+  text-align: center;
+  vertical-align:middle;
+  font-family: "Fredoka One";
+  font-size: 3.95em;
+  font-weight: bold;
+  text-shadow: 0.0625em 0.0625em #ff1f71;
+  color: white;
+  padding-bottom: 0.75em;
+}
+#regpass{
+  padding: 0.5em;
+}
+#regemail{
+  padding: 0.5em;
+}
+#regfirstname{
+  padding: 0.5em;
+}
+#reglastname{
+  padding: 0.5em;
+}
+#asklog{
+  padding-top: 1.25em;
+  vertical-align:middle;
+  font-family: "Fredoka One";
+  font-size: 0.95em;
+  font-weight: bold;
+  text-shadow: 0.0625em 0.0625em #ff1f71;
+  color: white;
+  padding-bottom: 2.5em;
+}
+#regbtnbox{
+  text-align: center;
+  padding: 1.875em;
+}
+
+
+
+
+/* Propiedades del search */
+#search_banner{
+  position: relative;
+  justify-content: center;
+	display: flex;
+}
+#resultbox{
+  margin-top: 0.625em;
+  width: -webkit-fill-available; /* Chrome */
+  width: -moz-available; /* Firefox */
+  text-align: center;
+}
+#textresult{
+  vertical-align:middle;
+  font-family: "Fredoka One";
+  font-size: 0.95em;
+  text-shadow: 0.0625em 0.0625em #ff1f71;
+  color: white;
+}
+#search-box{
+  position: absolute;
+  margin: 2em;
+}
+#btnsearch{
+  padding: 0.25em;
+  margin-left: 0.1875em;
+}
+#search_container{
+  min-height: 100%;
+  width: 100%;
+  justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 3.75em;
+}
+#position_search_container{
+  width: 18.75em;
+  height: 22.25em;
+  margin: 0.625em;
+  text-align: center;
+  justify-content: center;
+  vertical-align: auto;
+}
+#textsearchbox{
+  height: 5.25em;
+  position: static;
+}
+#textsearch{
+  padding-top: 1.25em;
+  vertical-align:middle;
+  font-family: "Fredoka One";
+  font-size: 0.95em;
+  text-shadow: 0.0625em 0.0625em #ff1f71;
+  color: white;
+}
+#searchpreview{
+  width: 300px;
+  height: 180px;
+  border-radius: 0.45em 0.45em;
+  border: 0.2125em solid #ff1f71;
+}
+#buttonbox{
+  margin-top: 20px;
+}
+#dwmp4{
+  float: left;
+  padding: 0.25em;
+  margin-left: 30px;
+}
+#dwmp3{
+  float: right;
+  padding: 0.25em;
+  margin-right: 30px;
+}
+
+
+
+/* -------------------------------------------------------------------------------------------------------------------------------------------------- */ 
+
+/* Responsive 800px*/ 
+@media (max-width: 800px){
+
+  .formulario{
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    padding: 0.3125em;
+  }
+  label{
+    font-family: "Fredoka One";
+    font-size: 1.25em;
+    font-weight: bold;
+    text-shadow: 0.0625em 0.0625em #ff1f71;
+    color: white;
+  }
+  .form-control{
+    width: 10.625em;
+    padding: 0.625em;
+    background: none;
+    box-sizing: border-box ;
+    border: 0.125rem solid #ff1f71;
+    color: white;
+    font-family: "Fredoka One";
+    outline: none;
+    padding: 0.3125em;
+    border-radius: 1.25em 1.25em;
+  }
+  .preview{
+    height: 18em;
+  }
+  .buttons{
+    margin: 0 auto;
+    margin-top: 2.25em;
+    width: 9.75em;
+    padding: 2.25em;
+    text-align: center;
+    color: white;
+    border-radius: 1.25em 1.25em;
+    background: #ff1f71;
+    box-shadow: 0 0 0.3125em #ff1f71, 0 0 1.875em #ff1f71, 0 0 3.75em #ff1f71;
+    transition: 0.5s;
+  }
+  
+}
+
+
+/* -------------------------------------------------------------------------------------------------------------------------------------------------- */ 
+
+/* Responsive 600px*/ 
+@media (max-width: 600px){
+  
+  #search-box{
+    margin-left: 80px;
+  }
+  #resultbox{
+    margin-top: 4.25em;
+  }
+  #textsearchbox{
+    height: 5.25em;
+    width: 12.5em;
+    margin-left: 3.125em;
+  }
+  #textsearch{
+    font-size: 0.85em;
+  }
+  #searchpreview{
+    width: 250px;
+    height: 150px;
+    border: 0.1125em solid #ff1f71;
+  }
+}
