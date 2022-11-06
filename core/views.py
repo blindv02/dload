@@ -9,8 +9,29 @@ import os
 from os import path, rename, remove
 from django.http import HttpResponse, HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
+from .forms import HistoriaForm
+from .models import models
 
 # Create your views here.
+
+#función q graba historial de desacarga
+def graba_historial(vurl,fdesc, tipov,tipod,uemail):
+        #Graba Historial
+        print('inicia grabar historial')
+        form = HistoriaForm()
+        form.fecha = fdesc
+        form.url = vurl
+        form.user_email =  uemail #request.user.email
+        form.tipo_descarga =  tipod #str.upper(str(button_type2))  #'MP3'
+        form.tipo_video = tipov
+        
+        print('form por grabarse')
+        form.save()
+        print('form grabado')
+        #FIN Graba Historial
+
+
+
 @login_required(login_url='')
 def index(request):
     return render(request, 'index.html')
@@ -56,10 +77,13 @@ def done(request):
         except IOError:
             # handle file not exist case here
             response = HttpResponseNotFound(request, 'error.html')
-            
+        
+        
+        graba_historial(url,models.DateTimeField(auto_now_add=True), '',str.upper(str(button_type2)),request.user.email)
+        
         os.remove(new_file)
         return response
-    
+        
     elif button_type1 == 'mp4':
         video = YouTube(url).streams.filter(file_extension='mp4').get_highest_resolution().download(homedir)
         base, ext = path.splitext(video)
@@ -77,7 +101,10 @@ def done(request):
         except IOError:
             # handle file not exist case here
             response = HttpResponseNotFound(request, 'error.html')
-            
+        
+        #Graba Historial
+        graba_historial(url,models.DateTimeField(auto_now_add=True), '',str.upper(str(button_type2)),request.user.email)
+    
         os.remove(new_file)
         return response
     else:
