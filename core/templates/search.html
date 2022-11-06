@@ -44,9 +44,16 @@
 								{%if historial%}
 									<P></P> <!-- Aca va la consulta al historial de descargas-->
 									<div id="resultbox"><p id="textresult">Hay {{historial|length}} descargas en tu hitorial</p></div>
-										<h2>Fecha  Formato   URL                                           Clase</h2>
+									<br>
+									<br>
+										<h2>Fecha  Formato   URL   Clase </h2>
+										<br>
+										<br>
 										{%for h in historial%}
-												<p>{{h.fecha}}    {{h.tipo_descarga}}    {{h.url}}    {{h.tipo_video}}</p>
+												<br>
+												<p class="text-center mt-4" id="textsearch">{{h.fecha}}    {{h.tipo_descarga}}    {{h.url}}    {{h.tipo_video}}</p>
+												<br>
+												<br>
 										{%endfor%}
 									</div>
 								{%else%}
