@@ -40,9 +40,19 @@
 										</div>			
 								</div>
 								{% endfor %}
-					{% else %}
-						<P></P>
-					{% endif %}
+						{% else %}
+								{%if historial%}
+									<P></P> <!-- Aca va la consulta al historial de descargas-->
+									<div id="resultbox"><p id="textresult">Hay {{historial|length}} descargas en tu hitorial</p></div>
+										<h2>Fecha  Formato   URL                                           Clase</h2>
+										{%for h in historial%}
+												<p>{{h.fecha}}    {{h.tipo_descarga}}    {{h.url}}    {{h.tipo_video}}</p>
+										{%endfor%}
+									</div>
+								{%else%}
+									<h2>El usuario: {{v.user_email}}  no tiene descargas aún</h2>
+								{%endif%}
+						{% endif %}
 				</div>
 </div>
 {% endblock content %}

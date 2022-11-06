@@ -16,8 +16,7 @@ from .models import models
 
 #función q graba historial de desacarga
 def graba_historial(vurl,fdesc, tipov,tipod,uemail):
-        #Graba Historial
-        print('inicia grabar historial')
+        #print('inicia grabar historial')
         form = HistoriaForm()
         form.fecha = fdesc
         form.url = vurl
@@ -25,11 +24,9 @@ def graba_historial(vurl,fdesc, tipov,tipod,uemail):
         form.tipo_descarga =  tipod #str.upper(str(button_type2))  #'MP3'
         form.tipo_video = tipov
         
-        print('form por grabarse')
+        #print('form por grabarse')
         form.save()
-        print('form grabado')
-        #FIN Graba Historial
-
+        #print('form grabado')
 
 
 @login_required(login_url='')
@@ -78,7 +75,7 @@ def done(request):
             # handle file not exist case here
             response = HttpResponseNotFound(request, 'error.html')
         
-        
+        #Graba historial de descarga
         graba_historial(url,models.DateTimeField(auto_now_add=True), '',str.upper(str(button_type2)),request.user.email)
         
         os.remove(new_file)
@@ -102,8 +99,8 @@ def done(request):
             # handle file not exist case here
             response = HttpResponseNotFound(request, 'error.html')
         
-        #Graba Historial
-        graba_historial(url,models.DateTimeField(auto_now_add=True), '',str.upper(str(button_type2)),request.user.email)
+        ##Graba historial de descarga
+        graba_historial(url,models.DateTimeField(auto_now_add=True), '',str.upper(str(button_type1)),request.user.email)
     
         os.remove(new_file)
         return response
@@ -116,14 +113,22 @@ def error(request):
 
 @login_required(login_url='')
 def search(request):
-    return render(request, 'search.html')
+    print(request.user.email)
+    historial = HistoriaForm.objects.filter(user_email__iexact = request.user.email)
+    return render(request, 'search.html',{'historial': historial})
+    #return render(request, 'search.html')
 
 @login_required(login_url='')
 def search_list(request):
     ustr = request.GET.get('url')
-    s = Search(ustr)    
-    return render(request, 'search.html',{'resultado': s.results})
-
+    if (ustr != ''):
+        s = Search(ustr)    
+        return render(request, 'search.html',{'resultado': s.results})
+    else:
+        #declarar variables
+        #traer datos filtrados
+        historial = HistoriaForm.objects.filter(user_email__iexact = request.user.email)
+        return render(request, 'search.html',{'historial': historial})
 
 @login_required(login_url='')
 def downmp3(request):
@@ -147,7 +152,9 @@ def downmp3(request):
         except IOError:
             # handle file not exist case here
             response = HttpResponseNotFound(request, 'error.html')
-            
+        
+        #Graba historial de descarga
+        graba_historial(vurl3,models.DateTimeField(auto_now_add=True), '','MP3',request.user.email)    
         os.remove(new_file)
         return response
 
@@ -174,6 +181,9 @@ def downmp4(request):
         except IOError:
             # handle file not exist case here
             response = HttpResponseNotFound(request, 'error.html')
-            
+        
+        #Graba historial de descarga
+        graba_historial(vurl4,models.DateTimeField(auto_now_add=True), '','MP4',request.user.email)        
+        
         os.remove(new_file)
         return response
