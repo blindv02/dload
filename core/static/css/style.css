@@ -362,8 +362,8 @@ label{
   color: white;
 }
 #searchpreview{
-  width: 300px;
-  height: 180px;
+  width: 18.75em;
+  height: 11.25em;
   border-radius: 0.45em 0.45em;
   border: 0.2125em solid #ff1f71;
 }
@@ -373,12 +373,69 @@ label{
 #dwmp4{
   float: left;
   padding: 0.25em;
-  margin-left: 30px;
+  margin-left: 1.875rem;
 }
 #dwmp3{
   float: right;
   padding: 0.25em;
-  margin-right: 30px;
+  margin-right: 1.875em;
+}
+
+
+
+/* Propiedades del Historial */
+#historycontainer{
+  margin: 6.25em;
+  width: 100%;
+  border-radius: 2.45em 2.45em;
+}
+#historytable{
+  text-align: center;
+  width: 100%;
+  min-height: 18.75em;
+  border-collapse: collapse;
+}
+#historytablehead{
+  margin-bottom: 1.25em;
+  border: 0.2125em solid #ff1f71;
+}
+.historytexthead{
+  padding: 0.625em;
+
+}
+tr:nth-child(){
+  background-color: transparent;
+}
+tr:hover{
+  background-color: #ff1f71;
+  box-shadow: 0 0 0.3125em #ff1f71, 0 0 1.875em #ff1f71, 0 0 3.75em #ff1f71;
+  transition: 0.5s;
+}
+th, td{
+  vertical-align:middle;
+  font-family: "Fredoka One";
+  font-size: 0.95em;
+  text-shadow: 0.0625em 0.0625em #ff1f71;
+  color: white;
+}
+#historycellbutton{
+  text-align: center;
+  margin: 5px;
+  width: 15.625em;
+}
+#historybuttonbox{
+  text-align: center;
+  vertical-align: middle;
+}
+#hdwmp4{
+  float: left;
+  margin: 5px;
+  padding: 0.2375em;
+}
+#hdwmp3{
+  float: right;
+  margin: 5px;
+  padding: 0.2375em;
 }
 
 
@@ -429,7 +486,28 @@ label{
     box-shadow: 0 0 0.3125em #ff1f71, 0 0 1.875em #ff1f71, 0 0 3.75em #ff1f71;
     transition: 0.5s;
   }
-  
+  #historycellbutton{
+    width: fit-content;
+    display: flex;
+  }
+  th, td{
+    width: fit-content;
+  } 
+  #historyformathead{
+    display: none;
+  }
+  #historyformat{
+    display: none;
+  }
+  #historyurl{
+    display: none;
+  }
+  #historyurlhead{
+    display: none;
+  }
+  #historyurlcell{
+    display: none;
+  }
 }
 
 
@@ -456,5 +534,14 @@ label{
     width: 250px;
     height: 150px;
     border: 0.1125em solid #ff1f71;
+  }
+  #historybuttonbox{
+    margin-top: 0em;
+  }
+  #historydatehead{
+    display: none;
+  }
+  #historycelldate{
+    display: none;
   }
 }
