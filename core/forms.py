@@ -15,7 +15,7 @@ class HistoriaForm(Historia_descarga):
     
     class meta:
         model = Historia_descarga
-        fields = ['fecha','user_email', 'tipo_descarga', 'url','tipo_video']
+        fields = ['fecha','user_email', 'tipo_descarga','descargas', 'url','titulo']
         
         
     

@@ -2,7 +2,7 @@ from cgitb import html
 from multiprocessing import context
 from turtle import title
 from unicodedata import name
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, HttpResponse, redirect,get_object_or_404
 from pytube import YouTube
 from pytube import Search
 import os
@@ -10,23 +10,40 @@ from os import path, rename, remove
 from django.http import HttpResponse, HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
 from .forms import HistoriaForm
-from .models import models
+from .models import models,Historia_descarga
 
 # Create your views here.
 
+#funcion q verifica si un video o audio fue desacargado para un usuario determinado
+def verifica_historial(vurl,uemail,tipod):
+    #frm = HistoriaForm()
+    cant_desc = Historia_descarga.objects.filter(user_email=uemail, url=vurl, tipo_descarga=tipod).count()
+    return cant_desc
+
 #función q graba historial de desacarga
-def graba_historial(vurl,fdesc, tipov,tipod,uemail):
+def graba_historial(vurl,fdesc, titulo,tipod,uemail):
         #print('inicia grabar historial')
         form = HistoriaForm()
         form.fecha = fdesc
         form.url = vurl
         form.user_email =  uemail #request.user.email
         form.tipo_descarga =  tipod #str.upper(str(button_type2))  #'MP3'
-        form.tipo_video = tipov
-        
-        #print('form por grabarse')
+        form.titulo = titulo
+        form.descargas = 1  
         form.save()
-        #print('form grabado')
+
+#Función que actualiz el historial de desacarga cuando se repite una bajada
+def actualiza_historial(vurl,tipod,uemail):
+    #traigo el registro a actualizar para obtener la PK, es una forma, podría hacerse de otra con menos
+    #código 
+    descarga = get_object_or_404(Historia_descarga, url=vurl,tipo_descarga=tipod,user_email=uemail)
+    #incremento el contador
+    descarga_utd = (descarga.descargas + 1)
+    #Actualizo el registro existente con la cantidad incrementada y, le cambio la fecha a la 
+    #del momento de la descarga
+    #print(descarga)
+    Historia_descarga.objects.filter(user_email=uemail, url=vurl, tipo_descarga=tipod).update(descargas=descarga_utd) #,fecha=str(models.DateTimeField(auto_now_add=True)))
+    #print(get_object_or_404(Historia_descarga, url=vurl,tipo_descarga=tipod,user_email=uemail))
 
 
 @login_required(login_url='')
@@ -75,8 +92,13 @@ def done(request):
             # handle file not exist case here
             response = HttpResponseNotFound(request, 'error.html')
         
-        #Graba historial de descarga
-        graba_historial(url,models.DateTimeField(auto_now_add=True), '',str.upper(str(button_type2)),request.user.email)
+        dwn = verifica_historial(url,request.user.email,'MP3')
+        if (dwn != 0):
+            #actualizar el mismo registro incrementada la cantida de desacargas
+            actualiza_historial(url,'MP3',request.user.email)
+        else:
+            #Graba historial de descarga
+            graba_historial(url,models.DateTimeField(auto_now_add=True), video.title,str.upper(button_type2),request.user.email)
         
         os.remove(new_file)
         return response
@@ -99,8 +121,13 @@ def done(request):
             # handle file not exist case here
             response = HttpResponseNotFound(request, 'error.html')
         
-        ##Graba historial de descarga
-        graba_historial(url,models.DateTimeField(auto_now_add=True), '',str.upper(str(button_type1)),request.user.email)
+        dwn = verifica_historial(url,request.user.email,'MP4')
+        if (dwn != 0):
+            #actualizar el mismo registro incrementada la cantida de desacargas
+            actualiza_historial(url,'MP4',request.user.email)
+        else:
+            #Graba historial de descarga
+            graba_historial(url,models.DateTimeField(auto_now_add=True), video.title,str.upper(button_type1),request.user.email)
     
         os.remove(new_file)
         return response
@@ -153,8 +180,14 @@ def downmp3(request):
             # handle file not exist case here
             response = HttpResponseNotFound(request, 'error.html')
         
-        #Graba historial de descarga
-        graba_historial(vurl3,models.DateTimeField(auto_now_add=True), '','MP3',request.user.email)    
+        dwn = verifica_historial(vurl3,request.user.email,'MP3')
+        if (dwn != 0):
+            #actualizar el mismo registro incrementada la cantida de desacargas
+            actualiza_historial(vurl3,'MP3',request.user.email)
+        else:
+            #Graba historial de descarga
+            graba_historial(vurl3,models.DateTimeField(auto_now_add=True), ytb.title,'MP3',request.user.email)    
+        
         os.remove(new_file)
         return response
 
@@ -182,8 +215,13 @@ def downmp4(request):
             # handle file not exist case here
             response = HttpResponseNotFound(request, 'error.html')
         
-        #Graba historial de descarga
-        graba_historial(vurl4,models.DateTimeField(auto_now_add=True), '','MP4',request.user.email)        
+        dwn = verifica_historial(vurl4,request.user.email,'MP4')
+        if (dwn != 0):
+            #actualizar el mismo registro incrementada la cantida de desacargas
+            actualiza_historial(vurl4,'MP4',request.user.email)
+        else:
+            #Graba historial de descarga
+            graba_historial(vurl4,models.DateTimeField(auto_now_add=True), ytb.title,'MP4',request.user.email)        
         
         os.remove(new_file)
         return response

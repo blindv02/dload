@@ -15,7 +15,7 @@ class UsuarioAdmin(admin.ModelAdmin):
 
 class Historia_descargaAdmin(admin.ModelAdmin):
     
-    list_display = ('fecha','user_email','tipo_descarga','url','tipo_video')
+    list_display = ('fecha','user_email','descargas','url','titulo')
     search_fields = ['fecha','user_email']
 
     

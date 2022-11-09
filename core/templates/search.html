@@ -48,32 +48,31 @@
 											<table id="historytable">
 												<thead id="historytablehead">
 													<tr>
-														<th class="historytexthead" id="historydatehead">Fecha</th><th class="historytexthead">Titulo</th><th class="historytexthead" id="historyformathead">Formato</th><th class="historytexthead" id="historyurlhead">URL</th><th class="historytexthead" id="historydownloadheadbuttons">Descarga de nuevo</th>
+														<th class="historytexthead" id="historydatehead">Fecha</th><th class="historytexthead">Titulo</th><th class="historytexthead" id="historyformathead">Formato</th><th class="historytexthead" id="historyurlhead">URL</th><th class="historytexthead" id="historydeshead"># Descargas</th><th class="historytexthead" id="historydownloadheadbuttons">Descarga de nuevo</th>
 													</tr>
 												</thead>
-										{%for h in historial%}
-
-												<tr>
-													<td id="historycelldate">{{h.fecha}}</td><td>"TITULO AQUIIIIIIIIIIIIIII"</td><td id="historyformat">{{h.tipo_descarga}}</td><td id="historyurlcell"><a href="{{h.url}}" target="_blank" style="color: white; text-decoration: none;" id="historyurl">{{h.url}}</a></td>
-													<td id="historycellbutton">
-														<div>
-															<form action = "/dwnmp3/" method = 'get'>
-																{% csrf_token %}
-																<button class = 'btn' type="submit" value="MP3" id= "hdwmp3">Download MP3</button>
-																<input class="form-control" type="hidden" name="vurl3" value = {{v.watch_url}}>
-															</form>
-				
-															<form action = '/dwnmp4/' method = 'get'>
-																{% csrf_token %}
-																<button class = 'btn' type="submit" value="MP4" id="hdwmp4">Download MP4</button>
-																<input class="form-control" type="hidden" name="vurl4" value = {{v.watch_url}}>
-															</form>
-														</div>
-													</td>
-												</tr>
-
-										{%endfor%}
-										</table>
+												{%for h in historial%}
+														<tr>
+															<td id="historycelldate">{{h.fecha}}</td><td>{{h.titulo}}</td><td id="historyformat">{{h.tipo_descarga}}</td><td id="historyurlcell"><a href="{{h.url}}" target="_blank" style="color: white; text-decoration: none;" id="historyurl">{{h.url}}</a><a href="{{h.descargas}}" target="_blank" style="color: white; text-decoration: none;" id="historydesc">{{h.descargas}}</a></td>
+															<td id="historycellbutton">
+																<div>
+																	<form action = "/dwnmp3/" method = 'get'>
+																		{% csrf_token %}
+																		<button class = 'btn' type="submit" value="MP3" id= "hdwmp3">Download MP3</button>
+																		<input class="form-control" type="hidden" name="vurl3" value = {{h.url}}>
+																	</form>
+						
+																	<form action = "/dwnmp4/" method = 'get'>
+																		{% csrf_token %}
+																		<button class = 'btn' type="submit" value="MP4" id="hdwmp4">Download MP4</button>
+																		<input class="form-control" type="hidden" name="vurl4" value = {{h.url}}>
+																	</form>
+																</div>
+															</td>
+														</tr>
+												{%endfor%}
+											</table>
+										</div>	
 									</div>
 								{%else%}
 								<div id="resultbox"><p id="textresult">El usuario: {{v.user_email}}  no tiene descargas aún</p></div>
