@@ -23,7 +23,6 @@ def verifica_historial(vurl,uemail,tipod):
 
 #función q graba historial de desacarga
 def graba_historial(vurl,fdesc, titulo,tipod,uemail):
-        #print('inicia grabar historial')
         form = HistoriaForm()
         form.fecha = fdesc
         form.url = vurl
@@ -42,9 +41,7 @@ def actualiza_historial(vurl,tipod,uemail):
     descarga_utd = (descarga.descargas + 1)
     #Actualizo el registro existente con la cantidad incrementada y, le cambio la fecha a la 
     #del momento de la descarga
-    #print(descarga)
     Historia_descarga.objects.filter(user_email=uemail, url=vurl, tipo_descarga=tipod).update(descargas=descarga_utd,fecha=date.today())
-    #print(get_object_or_404(Historia_descarga, url=vurl,tipo_descarga=tipod,user_email=uemail))
 
 
 @login_required(login_url='')
@@ -141,7 +138,6 @@ def error(request):
 
 @login_required(login_url='')
 def search(request):
-    print(request.user.email)
     historial = HistoriaForm.objects.filter(user_email__iexact = request.user.email)
     return render(request, 'search.html',{'historial': historial})
     #return render(request, 'search.html')
