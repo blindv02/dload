@@ -7,6 +7,7 @@ from pytube import YouTube
 from pytube import Search
 import os
 from os import path, rename, remove
+from datetime import date
 from django.http import HttpResponse, HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
 from .forms import HistoriaForm
@@ -42,7 +43,7 @@ def actualiza_historial(vurl,tipod,uemail):
     #Actualizo el registro existente con la cantidad incrementada y, le cambio la fecha a la 
     #del momento de la descarga
     #print(descarga)
-    Historia_descarga.objects.filter(user_email=uemail, url=vurl, tipo_descarga=tipod).update(descargas=descarga_utd) #,fecha=str(models.DateTimeField(auto_now_add=True)))
+    Historia_descarga.objects.filter(user_email=uemail, url=vurl, tipo_descarga=tipod).update(descargas=descarga_utd,fecha=date.today())
     #print(get_object_or_404(Historia_descarga, url=vurl,tipo_descarga=tipod,user_email=uemail))
 
 
