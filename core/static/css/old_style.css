@@ -508,12 +508,6 @@ th, td{
   #historyurlcell{
     display: none;
   }
-  #historyamounthead{
-    display: none;
-  }
-  #historyamount{
-    display: none;
-  }
 }
 
 
@@ -548,12 +542,6 @@ th, td{
     display: none;
   }
   #historycelldate{
-    display: none;
-  }
-  #historyamounthead{
-    display: none;
-  }
-  #historyamount{
     display: none;
   }
 }

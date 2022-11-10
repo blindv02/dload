@@ -1,16 +1,50 @@
 from cgitb import html
 from multiprocessing import context
+import time
 from turtle import title
 from unicodedata import name
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, HttpResponse, redirect,get_object_or_404
 from pytube import YouTube
 from pytube import Search
 import os
 from os import path, rename, remove
+from datetime import date
 from django.http import HttpResponse, HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
+from .forms import HistoriaForm
+from .models import models,Historia_descarga
+from pathvalidate import ValidationError, sanitize_filename, validate_filename
 
 # Create your views here.
+
+#funcion q verifica si un video o audio fue desacargado para un usuario determinado
+def verifica_historial(vurl,uemail,tipod):
+    cant_desc = Historia_descarga.objects.filter(user_email=uemail, url=vurl, tipo_descarga=tipod).count()
+    return cant_desc
+
+#función q graba historial de desacarga
+def graba_historial(vurl,fdesc, titulo,tipod,uemail):
+        form = HistoriaForm()
+        form.fecha = fdesc
+        form.url = vurl
+        form.user_email =  uemail 
+        form.tipo_descarga =  tipod 
+        form.titulo = titulo
+        form.descargas = 1  
+        form.save()
+
+#Función que actualiz el historial de desacarga cuando se repite una bajada
+def actualiza_historial(vurl,tipod,uemail):
+    #traigo el registro a actualizar para obtener la PK, es una forma, podría hacerse de otra con menos
+    #código 
+    descarga = get_object_or_404(Historia_descarga, url=vurl,tipo_descarga=tipod,user_email=uemail)
+    #incremento el contador
+    descarga_utd = (descarga.descargas + 1)
+    #Actualizo el registro existente con la cantidad incrementada y, le cambio la fecha a la 
+    #del momento de la descarga
+    Historia_descarga.objects.filter(user_email=uemail, url=vurl, tipo_descarga=tipod).update(descargas=descarga_utd,fecha=date.today())
+
+
 @login_required(login_url='')
 def index(request):
     return render(request, 'index.html')
@@ -40,7 +74,8 @@ def done(request):
     button_type2 = request.POST.get("bttn2")
     
     if button_type2 == 'mp3':
-        video = YouTube(url).streams.get_audio_only().download(homedir)
+        tmp_name = sanitize_filename(yt.title) + '-' + str(int(time.time())) + '.mp3'
+        video = YouTube(url).streams.get_audio_only().download(homedir,tmp_name)
         base, ext = path.splitext(video)
         new_file = base + '.mp3'
         rename(video, new_file)
@@ -51,17 +86,26 @@ def done(request):
 
             # sending response 
             response = HttpResponse(file_data, content_type='audio/mpeg')
-            response['Content-Disposition'] = 'attachment; filename="'+ yt.title +'.mp3"'
+            response['Content-Disposition'] = 'attachment; filename="'+ sanitize_filename(yt.title) +'.mp3"'
             
         except IOError:
             # handle file not exist case here
             response = HttpResponseNotFound(request, 'error.html')
-            
+        
+        dwn = verifica_historial(url,request.user.email,'MP3')
+        if (dwn != 0):
+            #actualizar el mismo registro incrementada la cantida de desacargas
+            actualiza_historial(url,'MP3',request.user.email)
+        else:
+            #Graba historial de descarga
+            graba_historial(url,models.DateTimeField(auto_now_add=True), video.title,str.upper(button_type2),request.user.email)
+        
         os.remove(new_file)
         return response
-    
+        
     elif button_type1 == 'mp4':
-        video = YouTube(url).streams.filter(file_extension='mp4').get_highest_resolution().download(homedir)
+        tmp_name = sanitize_filename(yt.title) + '-' + str(int(time.time())) + '.mp4'
+        video = YouTube(url).streams.filter(file_extension='mp4').get_highest_resolution().download(homedir,tmp_name)
         base, ext = path.splitext(video)
         new_file = base + '.mp4'
         rename(video, new_file)
@@ -72,12 +116,20 @@ def done(request):
 
             # sending response 
             response = HttpResponse(file_data, content_type='video/mp4')
-            response['Content-Disposition'] = 'attachment; filename="'+ yt.title +'.mp4"'
+            response['Content-Disposition'] = 'attachment; filename="'+ sanitize_filename(yt.title) +'.mp4"'
         
         except IOError:
             # handle file not exist case here
             response = HttpResponseNotFound(request, 'error.html')
-            
+        
+        dwn = verifica_historial(url,request.user.email,'MP4')
+        if (dwn != 0):
+            #actualizar el mismo registro incrementada la cantida de desacargas
+            actualiza_historial(url,'MP4',request.user.email)
+        else:
+            #Graba historial de descarga
+            graba_historial(url,models.DateTimeField(auto_now_add=True), video.title,str.upper(button_type1),request.user.email)
+    
         os.remove(new_file)
         return response
     else:
@@ -89,14 +141,19 @@ def error(request):
 
 @login_required(login_url='')
 def search(request):
-    return render(request, 'search.html')
+    historial = HistoriaForm.objects.filter(user_email__iexact = request.user.email)
+    return render(request, 'search.html',{'historial': historial})
 
 @login_required(login_url='')
 def search_list(request):
     ustr = request.GET.get('url')
-    s = Search(ustr)    
-    return render(request, 'search.html',{'resultado': s.results})
-
+    if (ustr != ''):
+        s = Search(ustr)    
+        return render(request, 'search.html',{'resultado': s.results})
+    else:
+        #traer datos filtrados
+        historial = Historia_descarga.objects.filter(user_email__iexact = request.user.email).order_by('-fecha','titulo','tipo_descarga')
+        return render(request, 'search.html',{'historial': historial})
 
 @login_required(login_url='')
 def downmp3(request):
@@ -104,11 +161,14 @@ def downmp3(request):
         vurl3 = request.GET.get('vurl3')
         homedir = os.path.expanduser("~\Downloads")
         ytb = YouTube(vurl3)
-        video = YouTube(vurl3).streams.get_audio_only().download(homedir)
+        #Cambio el nombre del archivo de descarga para evitar posibles dublicaciones.
+        #Luego en el try se envía realmente el nombre al cliente a traves del explorador. Esta posible
+        #duplicación la maneja el SO del cliente.
+        tmp_name = sanitize_filename(ytb.title) + '-' + str(int(time.time())) + '.mp3'
+        video = YouTube(vurl3).streams.get_audio_only().download(homedir,tmp_name)
         base, ext = path.splitext(video)
         new_file = base + '.mp3'
-        rename(video, new_file)
-        
+        os.rename(video,new_file)
         try:    
             with open(new_file, 'rb') as f:
                 file_data = f.read()
@@ -120,10 +180,17 @@ def downmp3(request):
         except IOError:
             # handle file not exist case here
             response = HttpResponseNotFound(request, 'error.html')
-            
-        os.remove(new_file)
+        
+        dwn = verifica_historial(vurl3,request.user.email,'MP3')
+        if (dwn != 0):
+            #actualizar el mismo registro incrementada la cantida de desacargas
+            actualiza_historial(vurl3,'MP3',request.user.email)
+        else:
+            #Graba historial de descarga
+            graba_historial(vurl3,models.DateTimeField(auto_now_add=True), sanitize_filename(ytb.title),'MP3',request.user.email)    
+        
+        remove(new_file)
         return response
-
 
 @login_required(login_url='')
 def downmp4(request):
@@ -131,22 +198,32 @@ def downmp4(request):
         vurl4 = request.GET.get('vurl4')
         ytb = YouTube(vurl4)
         homedir = os.path.expanduser("~\Downloads")
-        video = YouTube(vurl4).streams.filter(file_extension='mp4').get_highest_resolution().download(homedir)
+        #Cambio el nombre del archivo de descarga para evitar posibles dublicaciones.
+        #Luego en l try se envía realmente el nombre al cliente a traves del explorador. Esta posible
+        #duplicación la maneja el SO del cliente.
+        tmp_name = sanitize_filename(ytb.title) + '-' + str(int(time.time())) + '.mp4'
+        video = YouTube(vurl4).streams.filter(file_extension='mp4').get_highest_resolution().download(homedir,tmp_name)
         base, ext = path.splitext(video)
         new_file = base + '.mp4'
-        rename(video, new_file)
-        
+        os.rename(video, new_file) 
         try:    
             with open(new_file, 'rb') as f:
                 file_data = f.read()
-
             # sending response 
             response = HttpResponse(file_data, content_type='video/mp4')
-            response['Content-Disposition'] = 'attachment; filename="'+ ytb.title +'.mp4"'
+            response['Content-Disposition'] = 'attachment; filename="'+ sanitize_filename(ytb.title) +'.mp4"'
         
         except IOError:
-            # handle file not exist case here
+          # handle file not exist case here
             response = HttpResponseNotFound(request, 'error.html')
-            
+        
+        dwn = verifica_historial(vurl4,request.user.email,'MP4')
+        if (dwn != 0):
+            #actualizar el mismo registro incrementada la cantida de desacargas
+            actualiza_historial(vurl4,'MP4',request.user.email)
+        else:
+            #Graba historial de descarga
+            graba_historial(vurl4,models.DateTimeField(auto_now_add=True), ytb.title,'MP4',request.user.email)        
+        
         os.remove(new_file)
         return response
