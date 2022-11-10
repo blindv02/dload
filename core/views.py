@@ -1,5 +1,6 @@
 from cgitb import html
 from multiprocessing import context
+import time
 from turtle import title
 from unicodedata import name
 from django.shortcuts import render, HttpResponse, redirect,get_object_or_404
@@ -73,7 +74,8 @@ def done(request):
     button_type2 = request.POST.get("bttn2")
     
     if button_type2 == 'mp3':
-        video = YouTube(url).streams.get_audio_only().download(homedir)
+        tmp_name = yt.title + '-' + str(int(time.time())) + '.mp3'
+        video = YouTube(url).streams.get_audio_only().download(homedir,tmp_name)
         base, ext = path.splitext(video)
         new_file = base + '.mp3'
         rename(video, new_file)
@@ -102,7 +104,8 @@ def done(request):
         return response
         
     elif button_type1 == 'mp4':
-        video = YouTube(url).streams.filter(file_extension='mp4').get_highest_resolution().download(homedir)
+        tmp_name = yt.title + '-' + str(int(time.time())) + '.mp4'
+        video = YouTube(url).streams.filter(file_extension='mp4').get_highest_resolution().download(homedir,tmp_name)
         base, ext = path.splitext(video)
         new_file = base + '.mp4'
         rename(video, new_file)
@@ -151,7 +154,7 @@ def search_list(request):
     else:
         #declarar variables
         #traer datos filtrados
-        historial = HistoriaForm.objects.filter(user_email__iexact = request.user.email)
+        historial = Historia_descarga.objects.filter(user_email__iexact = request.user.email).order_by('-fecha','titulo','tipo_descarga')
         return render(request, 'search.html',{'historial': historial})
 
 @login_required(login_url='')
@@ -160,11 +163,14 @@ def downmp3(request):
         vurl3 = request.GET.get('vurl3')
         homedir = os.path.expanduser("~\Downloads")
         ytb = YouTube(vurl3)
-        video = YouTube(vurl3).streams.get_audio_only().download(homedir)
+        #Cambio el nombre del archivo de descarga para evitar posibles dublicaciones.
+        #Luego en l try se envía realmente el nombre al cliente a traves del explorador. Esta posible
+        #duplicación la maneja el SO del cliente.
+        tmp_name = ytb.title + '-' + str(int(time.time())) + '.mp3'
+        video = YouTube(vurl3).streams.get_audio_only().download(homedir,tmp_name)
         base, ext = path.splitext(video)
         new_file = base + '.mp3'
-        rename(video, new_file)
-        
+        os.rename(video,new_file)
         try:    
             with open(new_file, 'rb') as f:
                 file_data = f.read()
@@ -185,9 +191,8 @@ def downmp3(request):
             #Graba historial de descarga
             graba_historial(vurl3,models.DateTimeField(auto_now_add=True), ytb.title,'MP3',request.user.email)    
         
-        os.remove(new_file)
+        remove(new_file)
         return response
-
 
 @login_required(login_url='')
 def downmp4(request):
@@ -195,21 +200,23 @@ def downmp4(request):
         vurl4 = request.GET.get('vurl4')
         ytb = YouTube(vurl4)
         homedir = os.path.expanduser("~\Downloads")
-        video = YouTube(vurl4).streams.filter(file_extension='mp4').get_highest_resolution().download(homedir)
+        #Cambio el nombre del archivo de descarga para evitar posibles dublicaciones.
+        #Luego en l try se envía realmente el nombre al cliente a traves del explorador. Esta posible
+        #duplicación la maneja el SO del cliente.
+        tmp_name = ytb.title + '-' + str(int(time.time())) + '.mp4'
+        video = YouTube(vurl4).streams.filter(file_extension='mp4').get_highest_resolution().download(homedir,tmp_name)
         base, ext = path.splitext(video)
         new_file = base + '.mp4'
-        rename(video, new_file)
-        
+        os.rename(video, new_file) 
         try:    
             with open(new_file, 'rb') as f:
                 file_data = f.read()
-
             # sending response 
             response = HttpResponse(file_data, content_type='video/mp4')
             response['Content-Disposition'] = 'attachment; filename="'+ ytb.title +'.mp4"'
         
         except IOError:
-            # handle file not exist case here
+          # handle file not exist case here
             response = HttpResponseNotFound(request, 'error.html')
         
         dwn = verifica_historial(vurl4,request.user.email,'MP4')
