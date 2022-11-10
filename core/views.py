@@ -13,12 +13,12 @@ from django.http import HttpResponse, HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
 from .forms import HistoriaForm
 from .models import models,Historia_descarga
+from pathvalidate import ValidationError, sanitize_filename, validate_filename
 
 # Create your views here.
 
 #funcion q verifica si un video o audio fue desacargado para un usuario determinado
 def verifica_historial(vurl,uemail,tipod):
-    #frm = HistoriaForm()
     cant_desc = Historia_descarga.objects.filter(user_email=uemail, url=vurl, tipo_descarga=tipod).count()
     return cant_desc
 
@@ -27,8 +27,8 @@ def graba_historial(vurl,fdesc, titulo,tipod,uemail):
         form = HistoriaForm()
         form.fecha = fdesc
         form.url = vurl
-        form.user_email =  uemail #request.user.email
-        form.tipo_descarga =  tipod #str.upper(str(button_type2))  #'MP3'
+        form.user_email =  uemail 
+        form.tipo_descarga =  tipod 
         form.titulo = titulo
         form.descargas = 1  
         form.save()
@@ -74,7 +74,7 @@ def done(request):
     button_type2 = request.POST.get("bttn2")
     
     if button_type2 == 'mp3':
-        tmp_name = yt.title + '-' + str(int(time.time())) + '.mp3'
+        tmp_name = sanitize_filename(yt.title) + '-' + str(int(time.time())) + '.mp3'
         video = YouTube(url).streams.get_audio_only().download(homedir,tmp_name)
         base, ext = path.splitext(video)
         new_file = base + '.mp3'
@@ -86,7 +86,7 @@ def done(request):
 
             # sending response 
             response = HttpResponse(file_data, content_type='audio/mpeg')
-            response['Content-Disposition'] = 'attachment; filename="'+ yt.title +'.mp3"'
+            response['Content-Disposition'] = 'attachment; filename="'+ sanitize_filename(yt.title) +'.mp3"'
             
         except IOError:
             # handle file not exist case here
@@ -104,7 +104,7 @@ def done(request):
         return response
         
     elif button_type1 == 'mp4':
-        tmp_name = yt.title + '-' + str(int(time.time())) + '.mp4'
+        tmp_name = sanitize_filename(yt.title) + '-' + str(int(time.time())) + '.mp4'
         video = YouTube(url).streams.filter(file_extension='mp4').get_highest_resolution().download(homedir,tmp_name)
         base, ext = path.splitext(video)
         new_file = base + '.mp4'
@@ -116,7 +116,7 @@ def done(request):
 
             # sending response 
             response = HttpResponse(file_data, content_type='video/mp4')
-            response['Content-Disposition'] = 'attachment; filename="'+ yt.title +'.mp4"'
+            response['Content-Disposition'] = 'attachment; filename="'+ sanitize_filename(yt.title) +'.mp4"'
         
         except IOError:
             # handle file not exist case here
@@ -143,7 +143,6 @@ def error(request):
 def search(request):
     historial = HistoriaForm.objects.filter(user_email__iexact = request.user.email)
     return render(request, 'search.html',{'historial': historial})
-    #return render(request, 'search.html')
 
 @login_required(login_url='')
 def search_list(request):
@@ -152,7 +151,6 @@ def search_list(request):
         s = Search(ustr)    
         return render(request, 'search.html',{'resultado': s.results})
     else:
-        #declarar variables
         #traer datos filtrados
         historial = Historia_descarga.objects.filter(user_email__iexact = request.user.email).order_by('-fecha','titulo','tipo_descarga')
         return render(request, 'search.html',{'historial': historial})
@@ -164,9 +162,9 @@ def downmp3(request):
         homedir = os.path.expanduser("~\Downloads")
         ytb = YouTube(vurl3)
         #Cambio el nombre del archivo de descarga para evitar posibles dublicaciones.
-        #Luego en l try se envía realmente el nombre al cliente a traves del explorador. Esta posible
+        #Luego en el try se envía realmente el nombre al cliente a traves del explorador. Esta posible
         #duplicación la maneja el SO del cliente.
-        tmp_name = ytb.title + '-' + str(int(time.time())) + '.mp3'
+        tmp_name = sanitize_filename(ytb.title) + '-' + str(int(time.time())) + '.mp3'
         video = YouTube(vurl3).streams.get_audio_only().download(homedir,tmp_name)
         base, ext = path.splitext(video)
         new_file = base + '.mp3'
@@ -189,7 +187,7 @@ def downmp3(request):
             actualiza_historial(vurl3,'MP3',request.user.email)
         else:
             #Graba historial de descarga
-            graba_historial(vurl3,models.DateTimeField(auto_now_add=True), ytb.title,'MP3',request.user.email)    
+            graba_historial(vurl3,models.DateTimeField(auto_now_add=True), sanitize_filename(ytb.title),'MP3',request.user.email)    
         
         remove(new_file)
         return response
@@ -203,7 +201,7 @@ def downmp4(request):
         #Cambio el nombre del archivo de descarga para evitar posibles dublicaciones.
         #Luego en l try se envía realmente el nombre al cliente a traves del explorador. Esta posible
         #duplicación la maneja el SO del cliente.
-        tmp_name = ytb.title + '-' + str(int(time.time())) + '.mp4'
+        tmp_name = sanitize_filename(ytb.title) + '-' + str(int(time.time())) + '.mp4'
         video = YouTube(vurl4).streams.filter(file_extension='mp4').get_highest_resolution().download(homedir,tmp_name)
         base, ext = path.splitext(video)
         new_file = base + '.mp4'
@@ -213,7 +211,7 @@ def downmp4(request):
                 file_data = f.read()
             # sending response 
             response = HttpResponse(file_data, content_type='video/mp4')
-            response['Content-Disposition'] = 'attachment; filename="'+ ytb.title +'.mp4"'
+            response['Content-Disposition'] = 'attachment; filename="'+ sanitize_filename(ytb.title) +'.mp4"'
         
         except IOError:
           # handle file not exist case here

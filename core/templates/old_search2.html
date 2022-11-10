@@ -48,12 +48,12 @@
 											<table id="historytable">
 												<thead id="historytablehead">
 													<tr>
-														<th class="historytexthead" id="historydatehead">Fecha</th><th class="historytexthead">Titulo</th><th class="historytexthead" id="historyformathead">Formato</th><th class="historytexthead" id="historyurlhead">URL</th><th class="historytexthead" id="historyamounthead"># Descargas</th><th class="historytexthead" id="historydownloadheadbuttons">Descarga de nuevo</th>
+														<th class="historytexthead" id="historydatehead">Fecha</th><th class="historytexthead">Titulo</th><th class="historytexthead" id="historyformathead">Formato</th><th class="historytexthead" id="historyurlhead">URL</th><th class="historytexthead" id="historydeshead"># Descargas</th><th class="historytexthead" id="historydownloadheadbuttons">Descarga de nuevo</th>
 													</tr>
 												</thead>
 												{%for h in historial%}
 														<tr>
-															<td id="historycelldate">{{h.fecha}}</td><td id="historytitle" >{{h.titulo}}</td><td id="historyformat">{{h.tipo_descarga}}</td><td id="historyurlcell"><a href="{{h.url}}" target="_blank" style="color: white; text-decoration: none;" id="historyurl">{{h.url}}</a></td><td id="historyamount">{{h.descargas}}</td>
+															<td id="historycelldate">{{h.fecha}}</td><td>{{h.titulo}}</td><td id="historyformat">{{h.tipo_descarga}}</td><td id="historyurlcell"><a href="{{h.url}}" target="_blank" style="color: white; text-decoration: none;" id="historyurl">{{h.url}}</a><a href="{{h.descargas}}" target="_blank" style="color: white; text-decoration: none;" id="historydesc">{{h.descargas}}</a></td>
 															<td id="historycellbutton">
 																<div>
 																	<form action = "/dwnmp3/" method = 'get'>
