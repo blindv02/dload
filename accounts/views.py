@@ -16,6 +16,14 @@ from django.db.models import Q
 from django.http import HttpResponse 
 import json
 from django.contrib.auth import login, authenticate
+from django.contrib.auth.decorators import login_required
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.encoding import force_bytes
+from django.core.mail import EmailMessage
+import accounts
 
 from django.core.mail import send_mail
 import smtplib
@@ -88,5 +96,83 @@ def logout(request):
     messages.warning(request, 'Has salido de sesion')
     return redirect('login')
 
+
+##INCORPORAMOS EL OLVIDE MI CONTRASEÑA###
+def forgotPassword(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        if accounts.objects.filter(email=email).exists():
+            user = accounts.objects.get(email__exact=email)
+
+            current_site = get_current_site(request)
+
+            # Configuracion de los mails
+            email_sender = 'codoacodogrupo2@gmail.com'
+            email_password = 'nehzreldzquvgshy' #esta es la contraseña global de gmail para este mail
+            email_receiver = email
+
+            # configuramos el mail 
+            subject = 'Por favor resetea tu password en dload!'
+            body = render_to_string('accounts/reset_password_email.html', {
+                'user': user,
+                'domain': current_site,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': default_token_generator.make_token(user),
+            })
+
+            em = EmailMessage()
+            em['From'] = email_sender
+            em['To'] = email_receiver
+            em['Subject'] = subject
+            em.set_content(body)
+
+            # Add SSL (layer of security)
+            context = ssl.create_default_context()
+
+            # Log in and send the email
+            with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
+                smtp.login(email_sender, email_password)
+                smtp.sendmail(email_sender, email_receiver, em.as_string())
+                
+            messages.success(request, 'Un email fue enviado a tu bandeja de entrada para resetear tu password')
+            return redirect('login')
+        else:
+            messages.error(request, 'La cuenta de usuario no existe')
+            return redirect('forgotPassword')
+
+    return render(request, 'accounts/forgotPassword.html')
+
+def resetpassword_validate(request, uidb64, token):
+        try:
+            uid = urlsafe_base64_decode(uidb64).decode()
+            user = accounts._default_manager.get(pk=uid)
+        except(TypeError, ValueError, OverflowError, accounts.DoesNotExist):
+            user=None
+
+        if user is not None and default_token_generator.check_token(user, token):
+            request.session['uid'] = uid
+            messages.success(request, 'Por favor resetea tu password')
+            return redirect('resetPassword')
+        else:
+            messages.error(request, 'El link ha expirado')
+            return redirect('login')
+
+def resetPassword(request):
+    if request.method == 'POST':
+        password = request.POST['password']
+        confirm_password = request.POST['confirm_password']
+
+        if password == confirm_password:
+            uid = request.session.get('uid')
+            user = accounts.objects.get(pk=uid)
+            user.set_password(password)
+            user.save()
+            messages.success(request, 'El password se reseteo correctamente')
+            return redirect('login')
+        else:
+            messages.error(request, 'El password de confirmacion no concuerda')
+            return redirect('resetPassword')
+    else:
+        return render(request, 'accounts/reset_password_email.html')
 
 
