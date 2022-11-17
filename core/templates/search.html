@@ -53,7 +53,7 @@
 												</thead>
 												{%for h in historial%}
 														<tr>
-															<td id="historycelldate">{{h.fecha}}</td><td id="historytitle" >{{h.titulo}}</td><td id="historyformat">{{h.tipo_descarga}}</td><td id="historyurlcell"><a href="{{h.url}}" target="_blank" style="color: white; text-decoration: none;" id="historyurl">{{h.url}}</a></td><td id="historyamount">{{h.descargas}}</td>
+															<td id="historycelldate">{{h.fecha}}</td><td id="historytitle" style="text-align: left;" >{{h.titulo}}</td><td id="historyformat">{{h.tipo_descarga}}</td><td id="historyurlcell"><a href="{{h.url}}" target="_blank" style="color: white; text-decoration: none;" id="historyurl">{{h.url}}</a></td><td id="historyamount">{{h.descargas}}</td>
 															<td id="historycellbutton">
 																<div>
 																	<form action = "/dwnmp3/" method = 'get'>

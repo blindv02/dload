@@ -139,7 +139,7 @@ def forgotPassword(request):
             messages.error(request, 'La cuenta de usuario no existe')
             return redirect('forgotPassword')
 
-    return render(request, 'accounts/forgotPassword.html')
+    return render(request, 'forgotPassword.html')
 
 def resetpassword_validate(request, uidb64, token):
         try:
