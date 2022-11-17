@@ -37,7 +37,7 @@ class UsuariosManager(BaseUserManager):
 class Usuario(AbstractBaseUser):
     nombre = models.CharField(max_length=50,verbose_name='Nombre')
     apellido = models.CharField(max_length=50,verbose_name='Apellido')
-    email = models.CharField(max_length=100, unique=True,verbose_name='Email')
+    email = models.EmailField(max_length = 20,verbose_name='Email',unique=True)
 
     #campos atributos de django
     fecha_alta = models.DateTimeField(auto_now_add=True,verbose_name='Fecha de registro')
@@ -48,7 +48,7 @@ class Usuario(AbstractBaseUser):
     is_superadmin = models.BooleanField(default=True,verbose_name='Superadmin')
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['nombre', 'apellido']
+    REQUIRED_FIELDS = ['nombre','apellido']
 
     objects = UsuariosManager()
     class Meta:

@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="formulario">
-	<form action="downloaded/" method="get" id="enterlink">
+	<form action="{% url 'downloaded' %}" method="get" id="enterlink">
 			<label>Enter your link</label>
 			<br>
 			<input class="form-control" type="text" name="url">

@@ -45,7 +45,6 @@ def registrar(request):
             apellido = form.cleaned_data['apellido']
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
-            
             user = Usuario.objects.create_user(nombre=nombre, apellido=apellido, email=email, password=password)
             user.save()
             messages.success(request, 'Se guardo el usuario!')

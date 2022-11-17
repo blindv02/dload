@@ -19,7 +19,7 @@
 		</div>
 
 		<div id="userbox">
-			{% if usuario.id is None %}
+			{% if user.id is None %}
 			
 			<div class="widget-header" id="bienvenidobox">
 				<small class="bienvenido">Bienvenido visitante!</small>
@@ -31,7 +31,7 @@
 			{% else %}
 		
 			<div class="widget-header">
-			<small class="bienvenido">Bienvenido <strong>{{ usuario.nombre_completo }}</strong></small>
+			<small class="bienvenido">Bienvenido <strong>{{ user.nombre_completo }}</strong></small>
 			</div>
 			<div style="padding-top: 1.25em;">
 				<a href="{% url 'logout' %}" class="loginbtns">Logout</a> 

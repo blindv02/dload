@@ -10,7 +10,8 @@
             {% include 'alerts.html' %}
 
             <header class="mb-4"><h4 class="card-title" id="textreg">Registro de Usuario</h4></header>
-            <form action="{% url 'registrar' %}" method="POST" >
+            <form action="{% url 'registrar' %}" method="POST">
+            <!--form action="{% url 'registrar' %}" method="post" onsubmit="return Validar(event)"-->
                   {% csrf_token %}
                   
                     <div class="form-row" id="regformbox">
@@ -24,6 +25,7 @@
                         </div> 
                         <div class="col form-group" id="regemail">
                             <label>Email</label>
+                            
                             {{ form.email }}
                         </div> 
                         <div class="form-group col-md-6" id="regpass">
@@ -32,23 +34,33 @@
                         </div> 
                     </div>
 
+                   {% comment %}  {{ form.email.errors }}
+                    {{ form.non_field_errors }} {% endcomment %}
 
-                    {{ form.email.errors }}
-                    {{ form.non_field_errors }}
-
-               
-            
                     <div class="form-group" id="regbtnbox">
-                        <button type="submit" class="btn btn-primary btn-block" id="btnreg"> Registrar  </button>
+                        <button type="submit" class="btn btn-primary btn-block" id="btnreg" onclick="Validar(event);"> Registrar  </button>
                         <p class="text-center mt-4" id="asklog">Tienes una cuenta? <a href="{% url 'login' %}" style="color: white">Log In</a></p>
                     </div>
                 </form>
             </article>
         </div>
-
         <br><br>
-
     </section>
-
-
+<script>
+    function Validar(event){
+        event.preventDefault();
+        nombre = document.getElementById('id_nombre');   
+        //devolucion = document.getElementById('');
+        alert(nombre.value)
+        //alert(devolucion.value)
+        if (nombre.value==""){
+        nombre.focus();
+        alert('Falta Completar el nombre - FRONT')
+        return false;
+        } 
+        else{
+        return true;
+      }   
+    }
+</script>
 {% endblock %}
