@@ -100,8 +100,8 @@ def logout(request):
 def forgotPassword(request):
     if request.method == 'POST':
         email = request.POST['email']
-        if accounts.objects.filter(email=email).exists():
-            user = accounts.objects.get(email__exact=email)
+        if Usuario.objects.filter(email=email).exists():
+            user = Usuario.objects.get(email__exact=email)
 
             current_site = get_current_site(request)
 
@@ -109,13 +109,13 @@ def forgotPassword(request):
             email_sender = 'codoacodogrupo2@gmail.com'
             email_password = 'nehzreldzquvgshy' #esta es la contraseña global de gmail para este mail
             email_receiver = email
-
+            print('Cualquier cosa: ',urlsafe_base64_encode(force_bytes(user.id)))
             # configuramos el mail 
             subject = 'Por favor resetea tu password en dload!'
-            body = render_to_string('accounts/reset_password_email.html', {
+            body = render_to_string('reset_password_email.html', {
                 'user': user,
                 'domain': current_site,
-                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'uid': urlsafe_base64_encode(force_bytes(user.id)),
                 'token': default_token_generator.make_token(user),
             })
 
@@ -144,11 +144,14 @@ def forgotPassword(request):
 def resetpassword_validate(request, uidb64, token):
         try:
             uid = urlsafe_base64_decode(uidb64).decode()
-            user = accounts._default_manager.get(pk=uid)
-        except(TypeError, ValueError, OverflowError, accounts.DoesNotExist):
+            user = Usuario._default_manager.get(id=uid)
+            print(uid,'User ID')
+            print(user,'Este es el usuario')
+        except(TypeError, ValueError, OverflowError, Usuario.DoesNotExist):
             user=None
 
         if user is not None and default_token_generator.check_token(user, token):
+            print('genero token')
             request.session['uid'] = uid
             messages.success(request, 'Por favor resetea tu password')
             return redirect('resetPassword')
@@ -163,7 +166,7 @@ def resetPassword(request):
 
         if password == confirm_password:
             uid = request.session.get('uid')
-            user = accounts.objects.get(pk=uid)
+            user = Usuario.objects.get(id=uid)
             user.set_password(password)
             user.save()
             messages.success(request, 'El password se reseteo correctamente')
@@ -172,6 +175,6 @@ def resetPassword(request):
             messages.error(request, 'El password de confirmacion no concuerda')
             return redirect('resetPassword')
     else:
-        return render(request, 'accounts/reset_password_email.html')
+        return render(request, 'reset_password_email.html')
 
 
