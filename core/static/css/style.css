@@ -312,6 +312,9 @@ label{
   justify-content: center;
 	display: flex;
 }
+#getsearch{
+  text-align: center;
+}
 #resultbox{
   margin-top: 0.625em;
   width: -webkit-fill-available; /* Chrome */
@@ -319,6 +322,7 @@ label{
   text-align: center;
 }
 #textresult{
+  margin-top: 3.5em;
   vertical-align:middle;
   font-family: "Fredoka One";
   font-size: 0.95em;
@@ -332,6 +336,7 @@ label{
 #btnsearch{
   padding: 0.25em;
   margin-left: 0.1875em;
+  margin-top: 0.3125em;
 }
 #search_container{
   min-height: 100%;
@@ -428,12 +433,10 @@ th, td{
   vertical-align: middle;
 }
 #hdwmp4{
-  float: left;
   margin: 5px;
   padding: 0.2375em;
 }
 #hdwmp3{
-  float: right;
   margin: 5px;
   padding: 0.2375em;
 }

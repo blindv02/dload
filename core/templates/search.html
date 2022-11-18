@@ -55,6 +55,22 @@
 														<tr>
 															<td id="historycelldate">{{h.fecha}}</td><td id="historytitle" style="text-align: left;" >{{h.titulo}}</td><td id="historyformat">{{h.tipo_descarga}}</td><td id="historyurlcell"><a href="{{h.url}}" target="_blank" style="color: white; text-decoration: none;" id="historyurl">{{h.url}}</a></td><td id="historyamount">{{h.descargas}}</td>
 															<td id="historycellbutton">
+																{% if h.tipo_descarga == 'MP3' %}
+																
+																	<form action = "/dwnmp3/" method = 'get'>
+																		{% csrf_token %}
+																		<button class = 'btn' type="submit" value="MP3" id= "hdwmp3">Download MP3</button>
+																		<input class="form-control" type="hidden" name="vurl3" value = {{h.url}}>
+																	</form>
+
+																{% else %}
+																	<form action = "/dwnmp4/" method = 'get'>
+																		{% csrf_token %}
+																		<button class = 'btn' type="submit" value="MP4" id="hdwmp4">Download MP4</button>
+																		<input class="form-control" type="hidden" name="vurl4" value = {{h.url}}>
+																	</form>
+																{% endif %}
+																{% comment "buttons commented" %}
 																<div>
 																	<form action = "/dwnmp3/" method = 'get'>
 																		{% csrf_token %}
@@ -68,6 +84,7 @@
 																		<input class="form-control" type="hidden" name="vurl4" value = {{h.url}}>
 																	</form>
 																</div>
+																{% endcomment %}
 															</td>
 														</tr>
 												{%endfor%}
