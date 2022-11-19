@@ -291,12 +291,24 @@ label{
   border-color: white;
   width: 6.25em;
 }
-
 #back{
   margin-left: 0.9375em;
   margin-top: 1.25em;
 }
-
+#errorbackbutton{
+  margin-top: 25em;
+  width: 8.75em;
+  padding: 2.25em;
+  text-align: center;
+  color: white;
+  border-radius: 1.25em 1.25em;
+  background: #ff1f71;
+  box-shadow: 0 0 0.3125em #ff1f71, 0 0 1.875em #ff1f71, 0 0 3.75em #ff1f71;
+  transition: 0.5s;
+}
+#errorbtnback{
+  margin-right: 0;
+}
 
 
 /* Propiedades del login */
@@ -506,6 +518,49 @@ th, td{
   margin: 5px;
   padding: 0.2375em;
 }
+
+
+
+/* Propiedades del Error Page */
+
+.errorcontainer{
+  margin-bottom: 300px;
+}
+.errorcontainer span {
+  font-size: 120pt;
+  font-weight: bold;
+  position: relative;
+  font-family: "Fredoka One";
+  cursor: pointer;
+  transition: all 300ms ease;
+}
+.errorcontainer span::before {
+  content: var(--l);
+  position: absolute;
+  transform: scale(1.1);
+  filter: blur(15px);
+}
+.errorcontainer span::after {
+  content: var(--l);
+  position: absolute;
+  height: 200%;
+  width: 300px;
+  top: 80%;
+  left: 0;
+  filter: blur(30px);
+  transform: rotateX(50deg);
+  margin-bottom: 300px;
+}
+.errorcontainer span:hover {
+  filter: contrast(250%);
+}
+.errorcontainer span:nth-child(1) {
+  color: #d4cbcb;
+}
+.errorcontainer span:nth-child(2) {
+  color: #cc1a1a;
+}
+
 
 
 
