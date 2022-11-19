@@ -75,18 +75,85 @@ body{
   color: #cc1a1a;
 }
 
+
+
+
+/* Propiedades del menu desplegable */
+
 #imgbox{
+  float: right;
+  padding: 1.25em;
+}
+#imgbox:hover ul.active{
+  display: block;
+}
+.contenido{
   width: 2.8125em;
   height: 2.8125em;
-  float: right;
-  padding: 0.625em;
 }
+.cont-menu{
+  box-sizing: border-box;
+}
+#contmenu{
+  width: 250px;
+  height: 155px;
+  background: linear-gradient(50deg, #560e86, #0a0011);
+  box-shadow: 0 0 0.1em #ff1f71, 0 0 0.5em #ff1f71, 0 0 1em #ff1f71;
+  position: fixed;
+  top: 10px;
+  right: -100%;
+  transition: all .3s ease;
+}
+#check:checked ~ #contmenu{
+  transition: all .5s ease;
+  right: 90px;
+  position: absolute;
+}
+#contmenu:hover{
+  transform: scale(1.2) rotate(380deg);
+}
+#contmenuul{
+  list-style: none;
+}
+.contmenulist{
+  display: block;
+  padding: 13px;
+  text-align: center;
+  font-family: "Fredoka One";
+  font-size: 1.25em;
+  text-shadow: 0.0625em 0.0625em #ff1f71;
+  border: 0.01em solid #ff1f71;
+  color: white;
+  cursor: pointer;
+}
+.contmenulist:hover{
+  background-color: #ff1f71;
+  box-shadow: 0 0 0.3125em #ff1f71, 0 0 1.875em #ff1f71, 0 0 3.75em #ff1f71;
+  transition: 0.5s;
+}
+
+
 #imguser{
   width: 2.8125em;
   height: 2.8125em;
   float: right;
   margin-left: 3em;
 }
+#imguserloged{
+  width: 2.8125em;
+  height: 2.8125em;
+  float: right;
+  cursor: pointer;
+  margin-left: 3em;
+  transition: 1s;
+}
+#imguserloged:hover{
+  transform: scale(1.2) rotate(380deg);
+}
+#check{
+  display: none;
+}
+
 #clickimg{
   width: 2.8125em;
   height: 2.8125em;
@@ -98,7 +165,7 @@ body{
   width: fit-content;
   float: right;
   margin-top: 0.9375em;
-  margin-right: 1.875em;
+  margin-right: 0.625em;
 }
 .bienvenido{
   vertical-align:middle;
@@ -308,7 +375,6 @@ label{
 
 /* Propiedades del search */
 #search_banner{
-  position: relative;
   justify-content: center;
 	display: flex;
 }
@@ -461,6 +527,10 @@ th, td{
     font-weight: bold;
     text-shadow: 0.0625em 0.0625em #ff1f71;
     color: white;
+  }
+  #contmenu{
+    width: 150px;
+    rotate: 380deg;
   }
   .form-control{
     width: 10.625em;
