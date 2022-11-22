@@ -336,7 +336,6 @@ label{
   font-weight: bold;
   text-shadow: 0.0625em 0.0625em #ff1f71;
   color: white;
-  padding-bottom: 2.5em;
 }
 
 
@@ -561,7 +560,17 @@ th, td{
   color: #cc1a1a;
 }
 
+/* Propiedades del Forgot password */
 
+#fpasstext{
+  vertical-align:middle;
+  font-family: "Fredoka One";
+  font-size: 3.95em;
+  font-weight: bold;
+  text-shadow: 0.0625em 0.0625em #ff1f71;
+  color: white;
+  padding-bottom: 0.75em;
+}
 
 
 /* -------------------------------------------------------------------------------------------------------------------------------------------------- */ 
@@ -642,6 +651,7 @@ th, td{
   #historyamount{
     display: none;
   }
+
 }
 
 
@@ -683,5 +693,8 @@ th, td{
   }
   #historyamount{
     display: none;
+  }
+  #fpasstext{
+    font-size: 2.95em;
   }
 }
