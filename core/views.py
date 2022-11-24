@@ -6,6 +6,7 @@ from unicodedata import name
 from django.shortcuts import render, HttpResponse, redirect,get_object_or_404
 from pytube import YouTube
 from pytube import Search
+from pytube.exceptions import VideoUnavailable,VideoPrivate
 import os
 from os import path, rename, remove
 from datetime import date
@@ -147,7 +148,7 @@ def search(request):
 def search_list(request):
     ustr = request.GET.get('url')
     if (ustr != ''):
-        s = Search(ustr)    
+        s = Search(ustr)
         return render(request, 'search.html',{'resultado': s.results})
     else:
         #traer datos filtrados

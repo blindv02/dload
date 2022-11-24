@@ -37,7 +37,7 @@ class UsuariosManager(BaseUserManager):
 class Usuario(AbstractBaseUser):
     nombre = models.CharField(max_length=50,verbose_name='Nombre')
     apellido = models.CharField(max_length=50,verbose_name='Apellido')
-    email = models.EmailField(max_length = 20,verbose_name='Email',unique=True)
+    email = models.EmailField(max_length = 50,verbose_name='Email',unique=True)
 
     #campos atributos de django
     fecha_alta = models.DateTimeField(auto_now_add=True,verbose_name='Fecha de registro')
