@@ -23,8 +23,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
 from django.core.mail import EmailMessage
-import accounts
-
+import accounts  
 from django.core.mail import send_mail
 import smtplib
 import ssl
@@ -142,6 +141,8 @@ def forgotPassword(request):
     return render(request, 'forgotPassword.html')
 
 def resetpassword_validate(request, uidb64, token):
+        print(uidb64, 'este es el uid')
+        print(token, 'este es el token')
         try:
             uid = urlsafe_base64_decode(uidb64).decode()
             user = Usuario._default_manager.get(id=uid)
@@ -151,7 +152,7 @@ def resetpassword_validate(request, uidb64, token):
             user=None
 
         if user is not None and default_token_generator.check_token(user, token):
-            print('genero token')
+            print('genero token', token)
             request.session['uid'] = uid
             messages.success(request, 'Por favor resetea tu password')
             return redirect('resetPassword')
@@ -172,9 +173,12 @@ def resetPassword(request):
             messages.success(request, 'El password se reseteo correctamente')
             return redirect('login')
         else:
-            messages.error(request, 'El password de confirmacion no concuerda')
-            return redirect('resetPassword')
+            try:
+                messages.error(request, 'El password de confirmacion no concuerda')
+                return redirect('resetPassword')
+            except:
+                print('aqui es donde da el error')
     else:
-        return render(request, 'reset_password_email.html')
+        return render(request, 'resetPassword.html')
 
 
