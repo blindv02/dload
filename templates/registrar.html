@@ -10,7 +10,7 @@
             {% include 'alerts.html' %}
 
             <header class="mb-4"><h4 class="card-title" id="textreg">Registro de Usuario</h4></header>
-            <form action="{% url 'registrar' %}" method="POST">
+            <form action="{% url 'registrar' %}" method="POST" name='fr'>
             <!--form action="{% url 'registrar' %}" method="post" onsubmit="return Validar(event)"-->
                   {% csrf_token %}
                   
@@ -47,20 +47,21 @@
         <br><br>
     </section>
 <script>
+    function enviar_formulario(){
+        document.fr.submit()
+     }
+
     function Validar(event){
         event.preventDefault();
-        nombre = document.getElementById('id_nombre');   
-        //devolucion = document.getElementById('');
-        alert(nombre.value)
+        nombre = document.getElementById('id_nombre'); 
         //alert(devolucion.value)
         if (nombre.value==""){
         nombre.focus();
-        alert('Falta Completar el nombre - FRONT')
-        return false;
+        alert('Falta Completar el nombre')
         } 
         else{
-        return true;
+        return enviar_formulario(); 
         }
-    
+    }
 </script>
 {% endblock %}
