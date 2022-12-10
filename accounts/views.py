@@ -84,7 +84,6 @@ def login(request):
     context={
            'usuario':user
             }
-    print(context)
     return render(request, 'login.html',context)
 
 
@@ -108,7 +107,6 @@ def forgotPassword(request):
             email_sender = 'codoacodogrupo2@gmail.com'
             email_password = 'nehzreldzquvgshy' #esta es la contraseña global de gmail para este mail
             email_receiver = email
-            print('Cualquier cosa: ',urlsafe_base64_encode(force_bytes(user.id)))
             # configuramos el mail 
             subject = 'Por favor resetea tu password en dload!'
             body = render_to_string('reset_password_email.html', {
@@ -131,7 +129,7 @@ def forgotPassword(request):
             with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
                 smtp.login(email_sender, email_password)
                 smtp.sendmail(email_sender, email_receiver, em.as_string())
-                
+                print(body)
             messages.success(request, 'Un email fue enviado a tu bandeja de entrada para resetear tu password')
             return redirect('login')
         else:
@@ -141,8 +139,6 @@ def forgotPassword(request):
     return render(request, 'forgotPassword.html')
 
 def resetpassword_validate(request, uidb64, token):
-        print(uidb64, 'este es el uid')
-        print(token, 'este es el token')
         try:
             uid = urlsafe_base64_decode(uidb64).decode()
             user = Usuario._default_manager.get(id=uid)
@@ -152,7 +148,6 @@ def resetpassword_validate(request, uidb64, token):
             user=None
 
         if user is not None and default_token_generator.check_token(user, token):
-            print('genero token', token)
             request.session['uid'] = uid
             messages.success(request, 'Por favor resetea tu password')
             return redirect('resetPassword')
@@ -180,5 +175,4 @@ def resetPassword(request):
                 print('aqui es donde da el error')
     else:
         return render(request, 'resetPassword.html')
-
-
+        
