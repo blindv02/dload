@@ -1,18 +1,18 @@
 from cgitb import html
 from multiprocessing import context
 import time
-from turtle import title
 from unicodedata import name
 from django.shortcuts import render, HttpResponse, redirect,get_object_or_404
 from pytube import YouTube
 from pytube import Search
+from pytube.exceptions import VideoUnavailable,VideoPrivate
 import os
 from os import path, rename, remove
 from datetime import date
 from django.http import HttpResponse, HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
 from .forms import HistoriaForm
-from .models import models,Historia_descarga
+from .models import models,Historia_descarga,Usuarios
 from pathvalidate import ValidationError, sanitize_filename, validate_filename
 
 # Create your views here.
@@ -43,7 +43,6 @@ def actualiza_historial(vurl,tipod,uemail):
     #Actualizo el registro existente con la cantidad incrementada y, le cambio la fecha a la 
     #del momento de la descarga
     Historia_descarga.objects.filter(user_email=uemail, url=vurl, tipo_descarga=tipod).update(descargas=descarga_utd,fecha=date.today())
-
 
 @login_required(login_url='')
 def index(request):
@@ -148,7 +147,7 @@ def search(request):
 def search_list(request):
     ustr = request.GET.get('url')
     if (ustr != ''):
-        s = Search(ustr)    
+        s = Search(ustr)
         return render(request, 'search.html',{'resultado': s.results})
     else:
         #traer datos filtrados
