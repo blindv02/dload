@@ -61,24 +61,20 @@ def login(request):
         password = request.POST['password']
 
         user = auth.authenticate(email=email, password=password)
-        #print("El user es =", user)
-        if user is not None:
-           #print("hay usu")   
+        if user is not None: 
             auth.login(request, user)
-            messages.success(request, 'Has iniciado sesion exitosamente')
+            messages.success(request, 'You have successfully logged in')
             context={
                 'usuario':user,
             }
             return render(request,'index.html',context)
         else:
-            print("mal contraseña")
             if Usuario.objects.filter(email=email).exists():
                 user=Usuario.objects.filter(email=email).first()
-                messages.error(request, 'La contraseña es incorrecta!')
+                messages.error(request, 'Wrong password!')
                 return redirect('login')
             else:    
-                print("No existe el Usuario")
-                messages.error(request, 'No existe el usuario')
+                messages.error(request, 'The user does not exist')
                 return redirect('login')
     user=auth.authenticate(email=None, password=None)
     context={
@@ -90,7 +86,7 @@ def login(request):
 @login_required(login_url='login')
 def logout(request):
     auth.logout(request)
-    messages.warning(request, 'Has salido de sesion')
+    messages.warning(request, 'You have logged out')
     return redirect('login')
 
 
@@ -108,7 +104,7 @@ def forgotPassword(request):
             email_password = 'nehzreldzquvgshy' #esta es la contraseña global de gmail para este mail
             email_receiver = email
             # configuramos el mail 
-            subject = 'Por favor resetea tu password en dload!'
+            subject = 'Password reset request - dload!'
             body = render_to_string('reset_password_email.html', {
                 'user': user,
                 'domain': current_site,
@@ -130,10 +126,10 @@ def forgotPassword(request):
                 smtp.login(email_sender, email_password)
                 smtp.sendmail(email_sender, email_receiver, em.as_string())
                 print(body)
-            messages.success(request, 'Un email fue enviado a tu bandeja de entrada para resetear tu password')
+            messages.success(request, 'An email was sent to your inbox to reset your password')
             return redirect('login')
         else:
-            messages.error(request, 'La cuenta de usuario no existe')
+            messages.error(request, 'User does not exist')
             return redirect('forgotPassword')
 
     return render(request, 'forgotPassword.html')
@@ -149,10 +145,10 @@ def resetpassword_validate(request, uidb64, token):
 
         if user is not None and default_token_generator.check_token(user, token):
             request.session['uid'] = uid
-            messages.success(request, 'Por favor resetea tu password')
+            messages.success(request, 'Please reset your password')
             return redirect('resetPassword')
         else:
-            messages.error(request, 'El link ha expirado')
+            messages.error(request, 'Invalid link!')
             return redirect('login')
 
 def resetPassword(request):
@@ -165,11 +161,11 @@ def resetPassword(request):
             user = Usuario.objects.get(id=uid)
             user.set_password(password)
             user.save()
-            messages.success(request, 'El password se reseteo correctamente')
+            messages.success(request, 'Password reset successfully!!')
             return redirect('login')
         else:
             try:
-                messages.error(request, 'El password de confirmacion no concuerda')
+                messages.error(request, 'Passwords are not equals')
                 return redirect('resetPassword')
             except:
                 print('aqui es donde da el error')

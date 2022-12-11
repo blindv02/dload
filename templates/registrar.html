@@ -9,18 +9,18 @@
           <article class="card-body">
             {% include 'alerts.html' %}
 
-            <header class="mb-4"><h4 class="card-title" id="textreg">Registro de Usuario</h4></header>
+            <header class="mb-4"><h4 class="card-title" id="textreg">User Sign Up</h4></header>
             <form action="{% url 'registrar' %}" method="POST" name='fr'>
             <!--form action="{% url 'registrar' %}" method="post" onsubmit="return Validar(event)"-->
                   {% csrf_token %}
                   
                     <div class="form-row" id="regformbox">
                         <div class="col form-group" id="regfirstname">
-                            <label>Nombre</label>
+                            <label>Name</label>
                             {{ form.nombre }}
                         </div> 
                         <div class="col form-group" id="reglastname">
-                            <label>Apellido</label>
+                            <label>Last Name</label>
                             {{ form.apellido }}
                         </div> 
                         <div class="col form-group" id="regemail">
@@ -38,8 +38,8 @@
                     {{ form.non_field_errors }} {% endcomment %}
 
                     <div class="form-group" id="regbtnbox">
-                        <button type="submit" class="btn btn-primary btn-block" id="btnreg" onclick="Validar(event);"> Registrar  </button>
-                        <p class="text-center mt-4" id="asklog">Tienes una cuenta? <a href="{% url 'login' %}" style="color: white">Log In</a></p>
+                        <button type="submit" class="btn btn-primary btn-block" id="btnreg" onclick="Validar(event);"> Sign Up  </button>
+                        <p class="text-center mt-4" id="asklog">Already registered? <a href="{% url 'login' %}" style="color: white">Log In</a></p>
                     </div>
                 </form>
             </article>
@@ -57,7 +57,7 @@
         //alert(devolucion.value)
         if (nombre.value==""){
         nombre.focus();
-        alert('Falta Completar el nombre')
+        alert('Field Name can not be empty')
         } 
         else{
         return enviar_formulario(); 
