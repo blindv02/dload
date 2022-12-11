@@ -19,16 +19,16 @@
 
           <!--{% if user.id is None %}-->
           <div class="widget-header">
-            <small class="title text-muted" style="color:white;margin-top:10px;">Bienvenido visitante!</small>
+            <small class="title text-muted" style="color:white;margin-top:10px;">Welcome Guest!</small>
             <div>
               <a href="{%url 'login'%}" style="color:white;">Login</a> 
-              <a href="{%url 'registrar'%}" style="color:white;"> Registrarse</a>
+              <a href="{%url 'registrar'%}" style="color:white;"> Sign Up</a>
             </div>
           </div>
           <!--{% else %}-->
 
           <div class="widget-header">
-            <small class="title text-muted">Bienvenido <strong>{{ user.full_name }}</strong></small>
+            <small class="title text-muted">Welcome <strong>{{ user.full_name }}</strong></small>
               
           </div>
 

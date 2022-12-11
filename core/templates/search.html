@@ -15,7 +15,7 @@
 		</div>
 				<div id="search_container">
 						{% if resultado %}
-							<div id="resultbox"><p id="textresult">Hay {{resultado|length}} coincidencias</p></div>
+							<div id="resultbox"><p id="textresult"> Search results: {{resultado|length}} videos</p></div>
 								{% for v in resultado %}
 
 								<div id="position_search_container">
@@ -43,12 +43,12 @@
 						{% else %}
 								{%if historial%}
 									<!-- Aca va la consulta al historial de descargas-->
-									<div id="resultbox"><p id="textresult">Hay {{historial|length}} descargas en tu historial</p></div>
+									<div id="resultbox"><p id="textresult"> {{historial|length}} downloads found in your historial</p></div>
 										<div id="historycontainer">
 											<table id="historytable">
 												<thead id="historytablehead">
 													<tr>
-														<th class="historytexthead" id="historydatehead">Fecha</th><th class="historytexthead">Titulo</th><th class="historytexthead" id="historyformathead">Formato</th><th class="historytexthead" id="historyurlhead">URL</th><th class="historytexthead" id="historyamounthead"># Descargas</th><th class="historytexthead" id="historydownloadheadbuttons">Descarga de nuevo</th>
+														<th class="historytexthead" id="historydatehead">Date</th><th class="historytexthead">Title</th><th class="historytexthead" id="historyformathead">Format</th><th class="historytexthead" id="historyurlhead">URL</th><th class="historytexthead" id="historyamounthead"># Downloads</th><th class="historytexthead" id="historydownloadheadbuttons">Download again</th>
 													</tr>
 												</thead>
 												{%for h in historial%}

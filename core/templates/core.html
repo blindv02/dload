@@ -23,11 +23,11 @@
 			</div>
 		<div id="userbox">
 			<div class="widget-header" id="bienvenidobox">
-				<small class="bienvenido">Bienvenido visitante!</small>
+				<small class="bienvenido">Welcome Guest!</small>
 			</div>
 			<div style="padding-top: 1.25em;">
 				<a href="{% url 'login' %}" class="loginbtns">Login</a> 
-				<a href="{% url 'registrar' %}" class="loginbtns"> Registrar</a>
+				<a href="{% url 'registrar' %}" class="loginbtns"> Sign Up</a>
 			</div>
 		</div>
 			{% else %}
@@ -40,7 +40,7 @@
 					<div class="cont-menu active" id="contmenu">
 						<ul class="cont-menu active" id="contmenuul">
 							<li class="contmenulist"><a href="{% url 'search_list' %}" style="text-decoration: none; color: white">Search</a></li>
-							<li class="contmenulist"><a href="{% url 'search' %}" style="text-decoration: none; color: white">history</a></li>
+							<li class="contmenulist"><a href="{% url 'search' %}" style="text-decoration: none; color: white">History</a></li>
 							<li class="contmenulist"><a href="{% url 'home1' %}" style="text-decoration: none; color: white">Dload Url</a></li>
 						</ul>				
 					</div>
@@ -58,7 +58,7 @@
 	
 		<div id="userbox">
 			<div class="widget-header">
-			<small class="bienvenido">Bienvenido <strong>{{ user.nombre_completo }}</strong></small>
+			<small class="bienvenido">Welcome <strong>{{ user.nombre_completo }}</strong></small>
 			</div>
 			<div style="padding-top: 1.25em;">
 				<a href="{% url 'logout' %}" class="loginbtns">Logout</a> 
