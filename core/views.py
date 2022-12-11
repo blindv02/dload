@@ -140,7 +140,7 @@ def error(request):
 
 @login_required(login_url='')
 def search(request):
-    historial = HistoriaForm.objects.filter(user_email__iexact = request.user.email)
+    historial = HistoriaForm.objects.filter(user_email__iexact = request.user.email).order_by('-fecha','titulo','tipo_descarga')
     return render(request, 'search.html',{'historial': historial})
 
 @login_required(login_url='')

@@ -61,9 +61,7 @@ def login(request):
         password = request.POST['password']
 
         user = auth.authenticate(email=email, password=password)
-        #print("El user es =", user)
-        if user is not None:
-           #print("hay usu")   
+        if user is not None: 
             auth.login(request, user)
             messages.success(request, 'You have successfully logged in')
             context={
@@ -71,7 +69,6 @@ def login(request):
             }
             return render(request,'index.html',context)
         else:
-            print("mal contraseña")
             if Usuario.objects.filter(email=email).exists():
                 user=Usuario.objects.filter(email=email).first()
                 messages.error(request, 'Wrong password!')

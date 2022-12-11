@@ -3,6 +3,7 @@
 {% block content %}
 
 <div class="formulario">
+	{% include 'alerts.html' %}
 	<form action="{% url 'downloaded' %}" method="get" id="enterlink">
 			<label>Enter your link</label>
 			<br>
