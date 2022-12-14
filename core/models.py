@@ -5,6 +5,7 @@ class Usuarios(models.Model):
     nombre = models.CharField(max_length=50,verbose_name='Nombre')
     apellido = models.CharField(max_length=50,verbose_name='Apellido')
     email = models.CharField(max_length=100, unique=True,verbose_name='Email')
+    #email = models.CharField(primary_key=True ,max_length=100, unique=True,verbose_name='Email')
     password = models.CharField(max_length=50,verbose_name='Contraseña')
     fecha_alta = models.DateTimeField(auto_now_add=True,verbose_name='Fecha de Alta')
         
@@ -29,7 +30,7 @@ class Historia_descarga(models.Model):
     url = models.URLField(verbose_name='URL')
     descargas = models.SmallIntegerField(verbose_name='Cantidad de Descargas')
     titulo = models.CharField(max_length = 100,verbose_name='Título')
-    
+    #fk_user = models.ForeignKey(Usuarios,on_delete=models.CASCADE,verbose_name="id_User")
     
     def __str__(self):
         return f'{self.pk},{self.fecha},{self.titulo},{self.user_email},{self.url},{self.descargas},{self.tipo_descarga}'
